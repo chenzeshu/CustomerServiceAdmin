@@ -1,0 +1,98 @@
+.auth-title {
+  font-size: 1.6em;
+}
+.margin-top-right-10 {
+  margin: 14px 10px 0 -10px;
+}
+.margin-top-10 {
+  margin-top: 10px;
+}
+.self-font-weight-700 {
+  font-weight: 700;
+}
+.width-80per-margin-auto {
+  width: 80%;
+  margin: 0 auto;
+}
+li {
+  list-style-type: none;
+}
+.thumbnail {
+  position: relative;
+  padding: 0;
+}
+.thumbnail .caption {
+  padding: 0;
+}
+.thumbnail .icon-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  -webkit-box-align: top;
+      -ms-flex-align: top;
+          align-items: top;
+  width: 100%;
+  background: #dff0d8;
+  opacity: 0.7;
+  z-index: 100;
+}
+.thumbnail .icon-bar li {
+  margin-right: 10px;
+}
+.thumbnail .icon-bar li .btn {
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+.thumbnail .icon-bar li .fa-btn {
+  color: #f00;
+}
+.project-modal {
+  display: block;
+  padding: 0 auto;
+  line-height: 1.42857;
+  box-sizing: border-box;
+  background: transparent;
+  -webkit-transition: border 0.2s ease-in-out 0s;
+  transition: border 0.2s ease-in-out 0s;
+}
+.project-modal .inner-project-modal {
+  height: 140.8px;
+  padding: 12px;
+  border: 1px dotted #ddd;
+  border-radius: 4px;
+}
+.project-modal .inner-project-modal .modal-trigger {
+  display: block;
+  height: 46px;
+  line-height: 34px;
+  font-size: 2em;
+  margin: 12% auto;
+  background: transparent;
+}
+.project-modal .inner-project-modal .modal-trigger .fa-btn {
+  margin-right: 0;
+}
+.desc1-style {
+  padding: 5px 8px;
+}
+.desc1-style p {
+  text-indent: 2;
+}
+.touch {
+  cursor: pointer;
+}
+.touch:active {
+  color: #f00;
+}
+.width-100per-margin-auto {
+  width: 100%;
+  margin: 0 auto;
+}

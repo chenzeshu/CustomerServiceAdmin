@@ -1,0 +1,40 @@
+<?php
+
+namespace App\Http\Requests;
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class CreateCustomerRequest extends FormRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     *
+     * @return bool
+     */
+    public function authorize()
+    {
+        return true;
+    }
+
+    /**
+     * Get the validation rules that apply to the request.
+     *
+     * @return array
+     */
+    public function rules()
+    {
+        return [
+            'name' => 'required',
+            'addr' => 'required',
+            'profession' => 'required'
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'addr.required' =>'用户地址不能为空',
+            'profession.required' =>'用户所在行业不能为空'
+        ];
+    }
+}
