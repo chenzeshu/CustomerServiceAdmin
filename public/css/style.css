@@ -17,6 +17,10 @@
 li {
   list-style-type: none;
 }
+.single-floor {
+  display: block;
+  width: 100%;
+}
 .thumbnail {
   position: relative;
   padding: 0;

@@ -57,6 +57,11 @@ class ContractsController extends Controller
     public function show($id)
     {
         $services = Contract::findOrFail($id)->services()->get();
+        foreach ($services as $service){
+            $service->serviser = unserialize($service->serviser);
+            $service->customer2 = unserialize($service->customer2);
+            $service->visitor = unserialize($service->visitor);
+        };
         return view('contracts.index',compact('services','id'));
     }
 

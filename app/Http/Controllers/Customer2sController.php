@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Customer;
+use App\Customer2;
 use Illuminate\Http\Request;
 
 class Customer2sController extends Controller
@@ -34,7 +36,11 @@ class Customer2sController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Customer2::create([
+           'name' => $request->name,
+            'phone' => $request->phone,
+            'customer_name' =>$request->customer['name']
+        ]);
     }
 
     /**
@@ -56,7 +62,7 @@ class Customer2sController extends Controller
      */
     public function edit($id)
     {
-        //
+
     }
 
     /**
@@ -68,7 +74,11 @@ class Customer2sController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        Customer2::findOrFail($id)->update([
+            'name'=> $request->name,
+            'phone'=>$request->phone,
+            'customer_name'=>$request->customer['name'],
+        ]);
     }
 
     /**
@@ -79,6 +89,6 @@ class Customer2sController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Customer2::findOrFail($id)->delete();
     }
 }

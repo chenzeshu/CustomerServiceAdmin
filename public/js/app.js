@@ -21758,39 +21758,43 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
           _vm.descQuestion(service.desc1)
         }
       }
-    }, [_vm._v("问题描述")])]), _vm._v(" "), _c('td', [_vm._v(_vm._s(service.serviser))]), _vm._v(" "), _c('td', [(service.charge_if === 0) ? _c('span', [_vm._v("不收费")]) : _c('span', [_vm._v("收费")])]), _vm._v(" "), _c('td', [(service.rating === 0) ? _c('div', {
+    }, [_vm._v("问题描述")])]), _vm._v(" "), _c('td', _vm._l((service.serviser), function(person) {
+      return _c('span', {
+        staticClass: "single-floor"
+      }, [_vm._v("\n                    " + _vm._s(person.name) + "\n                    ")])
+    })), _vm._v(" "), _c('td', [(service.charge_if === 0) ? _c('span', [_vm._v("不收费")]) : _c('span', [_vm._v("收费")])]), _vm._v(" "), _c('td', [(service.rating === 0) ? _c('div', {
       staticClass: "btn btn-success btn-sm",
       on: {
         "click": function($event) {
-          _vm.customer(service)
+          _vm.customer(service.customer2)
         }
       }
     }, [_vm._v("非常满意")]) : _vm._e(), _vm._v(" "), (service.rating === 1) ? _c('div', {
       staticClass: "btn btn-primary btn-sm",
       on: {
         "click": function($event) {
-          _vm.customer(service)
+          _vm.customer(service.customer2)
         }
       }
     }, [_vm._v("满意")]) : _vm._e(), _vm._v(" "), (service.rating === 2) ? _c('div', {
       staticClass: "btn btn-warning btn-sm",
       on: {
         "click": function($event) {
-          _vm.customer(service)
+          _vm.customer(service.customer2)
         }
       }
     }, [_vm._v("一般")]) : _vm._e(), _vm._v(" "), (service.rating === 3) ? _c('div', {
       staticClass: "btn btn-danger btn-sm",
       on: {
         "click": function($event) {
-          _vm.customer(service)
+          _vm.customer(service.customer2)
         }
       }
     }, [_vm._v("不满意")]) : _vm._e(), _vm._v(" "), (service.rating === 4) ? _c('div', {
       staticClass: "btn btn-default btn-sm",
       on: {
         "click": function($event) {
-          _vm.customer(service)
+          _vm.customer(service.customer2)
         }
       }
     }, [_vm._v("未评价")]) : _vm._e()]), _vm._v(" "), _c('td', [(service.result_deal === 0) ? _c('div', {
@@ -21818,33 +21822,49 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
       staticClass: "btn btn-success btn-sm",
       on: {
         "click": function($event) {
-          _vm.visit(service)
+          _vm.visit(service.visitor, service.time3)
         }
       }
     }, [_vm._v("非常满意")]) : _vm._e(), _vm._v(" "), (service.result_visit === 1) ? _c('div', {
       staticClass: "btn btn-primary btn-sm",
       on: {
         "click": function($event) {
-          _vm.visit(service)
+          _vm.visit(service.visitor, service.time3)
         }
       }
     }, [_vm._v("满意")]) : _vm._e(), _vm._v(" "), (service.result_visit === 2) ? _c('div', {
       staticClass: "btn btn-warning btn-sm",
       on: {
         "click": function($event) {
-          _vm.visit(service)
+          _vm.visit(service.visitor, service.time3)
         }
       }
     }, [_vm._v("一般")]) : _vm._e(), _vm._v(" "), (service.result_visit === 3) ? _c('div', {
       staticClass: "btn btn-danger btn-sm",
       on: {
         "click": function($event) {
-          _vm.visit(service)
+          _vm.visit(service.visitor, service.time3)
         }
       }
     }, [_vm._v("不满意")]) : _vm._e(), _vm._v(" "), (service.result_visit === 4) ? _c('div', {
       staticClass: "btn btn-default btn-sm"
-    }, [_vm._v("未回访")]) : _vm._e()]), _vm._v(" "), _vm._m(1, true)])
+    }, [_vm._v("未回访")]) : _vm._e()]), _vm._v(" "), _c('td', {
+      staticClass: "service-item-edit"
+    }, [_c('i', {
+      staticClass: "fa fa-btn fa-cog",
+      on: {
+        "click": function($event) {
+          _vm.toggleEdit(service)
+        }
+      }
+    }), _vm._v(" "), _c('i', {
+      staticClass: "fa fa-btn fa-close",
+      on: {
+        "click": function($event) {
+          _vm.deleteConfirmService(service.id)
+        }
+      }
+    })])])
   }))]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "fade"
@@ -22321,49 +22341,517 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.addService(_vm.newService)
       }
     }
-  }, [_vm._v("新建服务单")])])])])])])], 1)
+  }, [_vm._v("新建服务单")])])])])])]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.editFlag),
+      expression: "editFlag"
+    }],
+    staticClass: "new-wrapper"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.toggleEdit
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("新建服务")])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('form', {
+    staticClass: "form-horizontal width-100per-margin-auto"
+  }, [_c('div', {
+    staticClass: "info-container"
+  }, [_c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("信息来源")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-8"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editService.source),
+      expression: "editService.source"
+    }],
+    staticClass: "form-control",
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.editService.source = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.basic.sources), function(source) {
+    return _c('option', {
+      domProps: {
+        "value": source.value
+      }
+    }, [_vm._v(_vm._s(source.text))])
+  }))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("服务类型")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-8"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editService.type),
+      expression: "editService.type"
+    }],
+    staticClass: "form-control",
+    on: {
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.editService.type = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
+    }
+  }, _vm._l((_vm.basic.types), function(type) {
+    return _c('option', {
+      domProps: {
+        "value": type.value
+      }
+    }, [_vm._v(_vm._s(type.text))])
+  }))])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("受理时间")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "选择受理日期",
+      "format": _vm.datepicker.format,
+      "size": _vm.datepicker.size,
+      "editable": _vm.datepicker.editable
+    },
+    model: {
+      value: (_vm.editService.time1),
+      callback: function($$v) {
+        _vm.editService.time1 = $$v
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("问题描述")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editService.desc1),
+      expression: "editService.desc1"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "cols": "60",
+      "rows": "3"
+    },
+    domProps: {
+      "value": (_vm.editService.desc1)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editService.desc1 = $event.target.value
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("服务人员")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('addman', {
+    attrs: {
+      "type": 1
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("是否收费")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10 form-inline"
+  }, _vm._l((_vm.basic.charge_if), function(charge) {
+    return _c('div', {
+      staticClass: "radio"
+    }, [_c('label', [_c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.editService.charge_if),
+        expression: "editService.charge_if"
+      }],
+      attrs: {
+        "type": "radio",
+        "name": "type"
+      },
+      domProps: {
+        "value": charge.value,
+        "checked": _vm._q(_vm.editService.charge_if, charge.value)
+      },
+      on: {
+        "__c": function($event) {
+          _vm.editService.charge_if = charge.value
+        }
+      }
+    }), _vm._v("\n                                            " + _vm._s(charge.text) + "\n                                        ")])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("客户联系人")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('addman', {
+    attrs: {
+      "type": 2
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("完工时间")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "选择完工日期",
+      "format": _vm.datepicker.format,
+      "size": _vm.datepicker.size,
+      "editable": _vm.datepicker.editable
+    },
+    model: {
+      value: (_vm.editService.time2),
+      callback: function($$v) {
+        _vm.editService.time2 = $$v
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("处理描述")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editService.desc2),
+      expression: "editService.desc2"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "cols": "60",
+      "rows": "3"
+    },
+    domProps: {
+      "value": (_vm.editService.desc2)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editService.desc2 = $event.target.value
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("处理结果")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10 form-inline"
+  }, _vm._l((_vm.basic.result_deal), function(result) {
+    return _c('div', {
+      staticClass: "radio"
+    }, [_c('label', [_c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.editService.result_deal),
+        expression: "editService.result_deal"
+      }],
+      attrs: {
+        "type": "radio",
+        "name": "bao"
+      },
+      domProps: {
+        "value": result.value,
+        "checked": _vm._q(_vm.editService.result_deal, result.value)
+      },
+      on: {
+        "__c": function($event) {
+          _vm.editService.result_deal = result.value
+        }
+      }
+    }), _vm._v("\n                                            " + _vm._s(result.text) + "\n                                        ")])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("备注派生")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editService.remark),
+      expression: "editService.remark"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "cols": "60",
+      "rows": "3"
+    },
+    domProps: {
+      "value": (_vm.editService.remark)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editService.remark = $event.target.value
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("客户评价")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10 form-inline"
+  }, _vm._l((_vm.basic.ratings), function(rating) {
+    return _c('div', {
+      staticClass: "radio"
+    }, [_c('label', [_c('input', {
+      directives: [{
+        name: "model",
+        rawName: "v-model",
+        value: (_vm.editService.rating),
+        expression: "editService.rating"
+      }],
+      attrs: {
+        "type": "radio",
+        "name": "rating"
+      },
+      domProps: {
+        "value": rating.value,
+        "checked": _vm._q(_vm.editService.rating, rating.value)
+      },
+      on: {
+        "__c": function($event) {
+          _vm.editService.rating = rating.value
+        }
+      }
+    }), _vm._v("\n                                            " + _vm._s(rating.text) + "\n                                        ")])])
+  }))])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("回访人员")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('addman', {
+    attrs: {
+      "type": 3
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("回访时间")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('el-date-picker', {
+    attrs: {
+      "type": "date",
+      "placeholder": "选择回访日期",
+      "format": _vm.datepicker.format,
+      "size": _vm.datepicker.size,
+      "editable": _vm.datepicker.editable
+    },
+    model: {
+      value: (_vm.editService.time3),
+      callback: function($$v) {
+        _vm.editService.time3 = $$v
+      }
+    }
+  })], 1)])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("回访时间（单位0.5天）")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-4"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model.number",
+      value: (_vm.editService.time4),
+      expression: "editService.time4",
+      modifiers: {
+        "number": true
+      }
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "placeholder": "请填写整数"
+    },
+    domProps: {
+      "value": (_vm.editService.time4)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editService.time4 = _vm._n($event.target.value)
+      },
+      "blur": function($event) {
+        _vm.$forceUpdate()
+      }
+    }
+  })]), _vm._v(" "), _c('div', {
+    staticClass: "col-xs-4"
+  }, [_c('span', {
+    staticClass: "time4"
+  }, [_vm._v("× 0.5天")])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-3 control-label"
+  }, [_vm._v("上传文件（暂时不做）")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10"
+  }, [_c('input', {
+    attrs: {
+      "type": "file"
+    }
+  })])])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-4 col-sm-10"
+  }, [_c('div', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": function($event) {
+        _vm.updateService(_vm.editService)
+      }
+    }
+  }, [_vm._v("修改服务单")])])])])])]), _vm._v(" "), _c('bounce')], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', {
     staticClass: "self-font-weight-700 text-center"
-  }, [_c('tr', [_c('th', {
+  }, [_c('tr', [_c('td', {
     attrs: {
       "width": "100"
     }
-  }, [_vm._v("内部受理编号")]), _vm._v(" "), _c('th', {
+  }, [_vm._v("内部受理编号")]), _vm._v(" "), _c('td', {
     attrs: {
       "width": "150"
     }
-  }, [_vm._v("信息来源")]), _vm._v(" "), _c('th', {
+  }, [_vm._v("信息来源")]), _vm._v(" "), _c('td', {
+    attrs: {
+      "widtd": "100"
+    }
+  }, [_vm._v("问题描述")]), _vm._v(" "), _c('td', {
+    attrs: {
+      "width": "150"
+    }
+  }, [_vm._v("服务人员")]), _vm._v(" "), _c('td', {
     attrs: {
       "width": "100"
     }
-  }, [_vm._v("问题描述")]), _vm._v(" "), _c('th', {
-    attrs: {
-      "width": "100"
-    }
-  }, [_vm._v("服务人员")]), _vm._v(" "), _c('th', {
-    attrs: {
-      "width": "100"
-    }
-  }, [_vm._v("收费情况")]), _vm._v(" "), _c('th', [_vm._v("用户评价")]), _vm._v(" "), _c('th', [_vm._v("处理状态"), _c('i', {
+  }, [_vm._v("收费情况")]), _vm._v(" "), _c('td', [_vm._v("用户评价")]), _vm._v(" "), _c('td', [_vm._v("处理状态"), _c('i', {
     staticClass: "fa fa-btn fa-caret-square-o-down"
-  })]), _vm._v(" "), _c('th', {
+  })]), _vm._v(" "), _c('td', {
     attrs: {
       "width": "100"
     }
-  }, [_vm._v("回访情况")]), _vm._v(" "), _c('th', {
+  }, [_vm._v("回访情况")]), _vm._v(" "), _c('td', {
     attrs: {
       "colspan": "2"
     }
   }, [_vm._v("操作")])])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('td', {
-    staticClass: "service-item-edit"
-  }, [_c('i', {
-    staticClass: "fa fa-btn fa-cog"
-  }), _vm._v(" "), _c('i', {
-    staticClass: "fa fa-btn fa-close"
-  })])
 }]}
 module.exports.render._withStripped = true
 if (false) {
@@ -42954,6 +43442,7 @@ var cc = console.log;
         removeMan: function removeMan(man) {
             var index = this.men.indexOf(man);
             this.men.splice(index, 1);
+
             if (this.type == 1) {
                 __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('rmserviser', this.men);
             } else if (this.type == 2) {
@@ -43325,8 +43814,11 @@ var cc = console.log;
     },
     methods: {
         toggleEdit: function toggleEdit(contract) {
+            cc(1);
             this.editFlag = !this.editFlag;
-            this.contract1 = Object.assign({}, this.contract1, contract);
+            if (this.editFlag) {
+                this.contract1 = Object.assign({}, this.contract1, contract);
+            }
         },
         toggleNew: function toggleNew() {
             this.newFlag = !this.newFlag;
@@ -43420,6 +43912,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addman_vue__ = __webpack_require__(39);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addman_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__addman_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bounce_vue__ = __webpack_require__(141);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bounce_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__bounce_vue__);
 //
 //
 //
@@ -43796,6 +44290,244 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -43803,8 +44535,8 @@ var cc = console.log;
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
         return {
-            newFlag: true,
-            editFlag: true,
+            newFlag: false,
+            editFlag: false,
             datepicker: {
                 size: "small",
                 editable: false,
@@ -43827,14 +44559,14 @@ var cc = console.log;
                 serviser: [{ user_id: 1, name: "张小龙" }],
                 charge_if: 0, //默认不收费
                 contract_id: this.contract_id, //母合同编号,
-                customer2: [{ cus2_id: 1, cus2: "土豪" } //一般就一个，以防万一
+                customer2: [{} //一般就一个，以防万一
                 ],
                 time1: null,
                 desc2: null,
                 result_deal: 0, //默认待解决
                 remark: null,
                 rating: 4, //默认未评价
-                vistor: [{ id: 1, name: "土豪" } //用于测试
+                visitor: [{} //用于测试
                 ],
                 time2: null,
                 result_visit: 4, //默认未回访
@@ -43870,64 +44602,134 @@ var cc = console.log;
                 content: '\n                <table class="table table-striped">\n                <thead>\n                    <tr>\n                        <td width="120">\u5904\u7406\u65F6\u95F4</td>\n                        <td>\u5904\u7406\u63CF\u8FF0</td>\n                        <td>\u5907\u6CE8\uFF08\u6D3E\u751F\uFF09</td>\n                    </tr>\n                </thead>\n                <tbody>\n                    <tr>\n                        <td>' + desc.time1 + '</td>\n                        <td>' + desc.desc2 + '</td>\n                        <td>' + desc.remark + '</td>\n                    </tr>\n                </tbody>\n</table>\n'
             });
         },
-        customer: function customer(service) {
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-rim2', //加上边框
-                area: ['380px', '180px'], //宽高
-                content: '\n                <table class="table table-striped text-center">\n                <tr>\n                    <td>\u5BA2\u6237\u8054\u7CFB\u4EBAid</td>\n                    <td>\u5BA2\u6237\u8054\u7CFB\u4EBA</td>\n                </tr>\n                <tr>\n                    <td>' + service.customer2_id + '</td>\n                    <td>' + service.customer2 + '</td>\n</tr>\n</table>\n'
-            });
+        customer: function customer(customer2) {
+            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('bounce', { type: 1, data: customer2 });
         },
-        visit: function visit(service) {
-            layer.open({
-                type: 1,
-                skin: 'layui-layer-rim2', //加上边框
-                area: ['380px', '180px'], //宽高
-                content: '\n                <table class="table table-striped text-center">\n                <tr>\n\n                    <td>\u56DE\u8BBF\u4EBA</td>\n                    <td>\u56DE\u8BBF\u65E5\u671F</td>\n                </tr>\n                <tr>\n                    <td>' + service.vistor + '</td>\n                    <td>' + service.time2 + '</td>\n</tr>\n</table>\n'
-            });
+        visit: function visit(visitor, time) {
+            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('bounce', { type: 2, data: visitor, time: time });
         },
         toggleNew: function toggleNew() {
             this.newFlag = !this.newFlag;
         },
+        toggleEdit: function toggleEdit(service) {
+            this.editFlag = !this.editFlag;
+            this.editService = Object.assign({}, service);
+            cc(this.editService);
+        },
         addService: function addService(service) {
+            var _this = this;
+
             axios.post('/services', service).then(function (res) {
-                res = res.data;
-                console.log(res);
+                layer.msg("新增成功", { icon: 6 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+                _this.newFlag = false;
             }, function (error) {
-                error.status;
+                layer.msg("新增失败，请检查", { icon: 5 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
             });
         },
-        updateService: function updateService() {}
+        updateService: function updateService(service) {
+            var _this2 = this;
+
+            var id = service.id;
+            axios.patch('/services/' + id, service).then(function (res) {
+                layer.msg("更新成功", { icon: 6 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+                _this2.newFlag = false;
+            }, function (error) {
+                error.status;
+                layer.msg("更新失败，请检查", { icon: 5 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+            });
+        },
+        deleteConfirmService: function deleteConfirmService(id) {
+            var _this3 = this;
+
+            layer.confirm('确定要删除这条服务记录？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                _this3.deleteService(id);
+            });
+        },
+        deleteService: function deleteService(id) {
+            var _this4 = this;
+
+            axios.delete('/services/' + id).then(function (res) {
+                layer.msg("删除成功", { icon: 6 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+                _this4.newFlag = false;
+            }, function (error) {
+                error.status;
+                layer.msg("删除失败，请检查", { icon: 5 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+            });
+        }
     },
     mounted: function mounted() {},
     created: function created() {
-        var _this = this;
+        var _this5 = this;
 
         //由于再外层用的blade填充5个v-services组件，所以事件被监听了5次
         //可想而知，当还要扩展已解决和未解决时，会有10次。
         //目前先传v-service type + result_deal解决，后期全部vue化
         __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$on('addserviser', function (data) {
-            _this.newService.serviser = data;
+            if (_this5.newFlag) {
+                _this5.newService.serviser = data;
+            } else if (_this5.editFlag) {
+                _this5.editService.serviser = data;
+            }
         });
         __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$on('addcus', function (data) {
-            _this.newService.serviser = data;
+            if (_this5.newFlag) {
+                _this5.newService.customer2 = data;
+            } else if (_this5.editFlag) {
+                _this5.editService.customer2 = data;
+            }
         });
         __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$on('addvisitor', function (data) {
-            _this.newService.serviser = data;
+            if (_this5.newFlag) {
+                _this5.newService.visitor = data;
+            } else if (_this5.editFlag) {
+                _this5.editService.visitor = data;
+            }
         });
         __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$on('rmserviser', function (data) {
-            _this.newService.serviser = data;
+            if (_this5.newFlag) {
+                _this5.newService.serviser = data;
+            } else if (_this5.editFlag) {
+                _this5.editService.serviser = data;
+            }
         });
         __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$on('rmcus', function (data) {
-            _this.newService.serviser = data;
+            if (_this5.newFlag) {
+                _this5.newService.customer2 = data;
+            } else if (_this5.editFlag) {
+                _this5.editService.customer2 = data;
+            }
         });
         __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$on('rmvisitor', function (data) {
-            _this.newService.serviser = data;
+            if (_this5.newFlag) {
+                _this5.newService.visitor = data;
+            } else if (_this5.editFlag) {
+                _this5.editService.visitor = data;
+            }
         });
     },
 
     components: {
-        addman: __WEBPACK_IMPORTED_MODULE_1__addman_vue___default.a
+        addman: __WEBPACK_IMPORTED_MODULE_1__addman_vue___default.a, bounce: __WEBPACK_IMPORTED_MODULE_2__bounce_vue___default.a
     }
 };
 
@@ -80252,7 +81054,23 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })]), _vm._v(" "), _c('table', {
     staticClass: "table table-striped table-hover"
   }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.cus2s), function(cus2) {
-    return _c('tr', [_c('td', [_vm._v(_vm._s(cus2.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cus2.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cus2.phone))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cus2.customer_name))]), _vm._v(" "), _c('td')])
+    return _c('tr', [_c('td', [_vm._v(_vm._s(cus2.id))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cus2.name))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cus2.phone))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(cus2.customer_name))]), _vm._v(" "), _c('td', {
+      staticClass: "service-item-edit"
+    }, [_c('i', {
+      staticClass: "fa fa-btn fa-cog",
+      on: {
+        "click": function($event) {
+          _vm.toggleEdit(cus2)
+        }
+      }
+    }), _vm._v(" "), _c('i', {
+      staticClass: "fa fa-btn fa-close",
+      on: {
+        "click": function($event) {
+          _vm.deleteConfirm(cus2.id)
+        }
+      }
+    })])])
   }))]), _vm._v(" "), _c('transition', {
     attrs: {
       "name": "fade"
@@ -80286,13 +81104,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-3 control-label"
+    staticClass: "col-sm-4 control-label"
   }, [_vm._v("联系人姓名")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-8"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-10 col-xs-offset-1"
+    staticClass: "col-xs-10 "
   }, [_c('input', {
     directives: [{
       name: "model",
@@ -80316,13 +81134,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-3 control-label"
+    staticClass: "col-sm-4 control-label"
   }, [_vm._v("联系方式")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-8"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-10 col-xs-offset-1"
+    staticClass: "col-xs-10 "
   }, [_c('input', {
     directives: [{
       name: "model",
@@ -80346,13 +81164,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   })])])])]), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('label', {
-    staticClass: "col-sm-3 control-label"
+    staticClass: "col-sm-4 control-label"
   }, [_vm._v("单位名称")]), _vm._v(" "), _c('div', {
     staticClass: "col-sm-8"
   }, [_c('div', {
     staticClass: "row"
   }, [_c('div', {
-    staticClass: "col-xs-10 col-xs-offset-1"
+    staticClass: "col-xs-10 "
   }, [_c('addcompany')], 1)])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
     staticClass: "form-group"
   }, [_c('div', {
@@ -80364,7 +81182,141 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
         _vm.addCus2(_vm.newCus2)
       }
     }
-  }, [_vm._v("新建服务单")])])])])])])], 1)
+  }, [_vm._v("提交")])])])])])]), _vm._v(" "), _c('transition', {
+    attrs: {
+      "name": "fade"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.editFlag),
+      expression: "editFlag"
+    }],
+    staticClass: "new-wrapper"
+  }, [_c('div', {
+    staticClass: "modal-header"
+  }, [_c('button', {
+    staticClass: "close",
+    attrs: {
+      "type": "button"
+    },
+    on: {
+      "click": _vm.toggleEdit
+    }
+  }, [_c('span', {
+    attrs: {
+      "aria-hidden": "true"
+    }
+  }, [_vm._v("×")])]), _vm._v(" "), _c('h4', {
+    staticClass: "modal-title"
+  }, [_vm._v("编辑联系人")])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('form', {
+    staticClass: "form-horizontal width-100per-margin-auto"
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editCus22.id),
+      expression: "editCus22.id"
+    }],
+    attrs: {
+      "type": "hidden"
+    },
+    domProps: {
+      "value": (_vm.editCus22.id)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editCus22.id = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4 control-label"
+  }, [_vm._v("联系人姓名")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10 "
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editCus22.name),
+      expression: "editCus22.name"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.editCus22.name)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editCus22.name = $event.target.value
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4 control-label"
+  }, [_vm._v("联系方式")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10 "
+  }, [_c('input', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.editCus22.phone),
+      expression: "editCus22.phone"
+    }],
+    staticClass: "form-control",
+    attrs: {
+      "type": "text"
+    },
+    domProps: {
+      "value": (_vm.editCus22.phone)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.editCus22.phone = $event.target.value
+      }
+    }
+  })])])])]), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('label', {
+    staticClass: "col-sm-4 control-label"
+  }, [_vm._v("单位名称")]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-8"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-xs-10 "
+  }, [_c('addcompany', {
+    attrs: {
+      "customer_name": _vm.editCus22.customer_name
+    }
+  })], 1)])])]), _vm._v(" "), _c('br'), _vm._v(" "), _c('div', {
+    staticClass: "form-group"
+  }, [_c('div', {
+    staticClass: "col-sm-offset-4 col-sm-10"
+  }, [_c('div', {
+    staticClass: "btn btn-default",
+    on: {
+      "click": function($event) {
+        _vm.editCus2(_vm.editCus22)
+      }
+    }
+  }, [_vm._v("提交")])])])])])])], 1)
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('tr', [_c('th', [_vm._v("联系人ID")]), _vm._v(" "), _c('th', [_vm._v("客户联系人姓名")]), _vm._v(" "), _c('th', [_vm._v("联系方式")]), _vm._v(" "), _c('th', [_vm._v("所属客户单位")]), _vm._v(" "), _c('th', {
     attrs: {
@@ -80533,6 +81485,61 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -80540,25 +81547,111 @@ var cc = console.log;
 /* harmony default export */ __webpack_exports__["default"] = {
     data: function data() {
         return {
-            newCus2: {},
-            newFlag: true,
-            editFlag: true
+            newCus2: {
+                customer: null
+            },
+            editCus22: {},
+            newFlag: false,
+            editFlag: false
         };
     },
 
     props: {
-        cus2s: {
+        cus2s: { //该客户下的所有联系人的数组
             type: Array
         }
     },
     methods: {
-        addCus2: function addCus2(cus2) {},
+        addCus2: function addCus2(cus2) {
+            var _this = this;
+
+            axios.post("/customer2s", cus2).then(function (res) {
+                layer.msg("新增成功", { icon: 6 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+                _this.newFlag = false;
+            }, function (error) {
+                layer.msg("新增失败，请检查", { icon: 5 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+            });
+        },
+        editCus2: function editCus2(cus22) {
+            var _this2 = this;
+
+            var id = cus22.id;
+            axios.patch("/customer2s/" + id, cus22).then(function (res) {
+                layer.msg("修改成功", { icon: 6 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+                _this2.newFlag = false;
+            }, function (error) {
+                layer.msg("修改失败，请检查", { icon: 5 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+            });
+        },
+        deleteConfirm: function deleteConfirm(id) {
+            var _this3 = this;
+
+            layer.confirm('确定要删除这条合同？', {
+                btn: ['确定', '取消'] //按钮
+            }, function () {
+                _this3.deleteCus2(id);
+            });
+        },
+        deleteCus2: function deleteCus2(id) {
+            var _this4 = this;
+
+            axios.delete("/customer2s/" + id).then(function (res) {
+                layer.msg("删除成功", { icon: 6 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+                _this4.newFlag = false;
+            }, function (error) {
+                layer.msg("删除失败，请检查", { icon: 5 });
+                setTimeout(function () {
+                    location.href = location.href;
+                }, 900);
+            });
+        },
         toggleNew: function toggleNew() {
             this.newFlag = !this.newFlag;
+        },
+        toggleEdit: function toggleEdit(cus2) {
+            this.editFlag = !this.editFlag;
+            //注意：因为cus的数据结构，是没有customer子对象的，其在第一层有一个customer_name的字段，作为单位名。
+            if (this.editFlag) {
+                this.editCus22 = Object.assign({}, this.editCus22, cus2);
+                this.editCus22.customer = { id: 9999, name: cus2.customer_name }; //id其实没有产生作用，后台把主键改成名称了
+            }
         }
     },
     mounted: function mounted() {},
-    created: function created() {},
+    created: function created() {
+        var _this5 = this;
+
+        __WEBPACK_IMPORTED_MODULE_1__utils_eventBus__["a" /* default */].$on('addcompany', function (data) {
+            if (_this5.newFlag) {
+                _this5.newCus2.customer = data;
+            } else if (_this5.editFlag) {
+                _this5.editCus22.customer = data;
+            }
+        });
+
+        __WEBPACK_IMPORTED_MODULE_1__utils_eventBus__["a" /* default */].$on('rmcompany', function () {
+            if (_this5.newFlag) {
+                _this5.newCus2.customer = null;
+            } else if (_this5.editFlag) {
+                _this5.editCus22.customer = null;
+            }
+        });
+    },
 
     components: {
         addcompany: __WEBPACK_IMPORTED_MODULE_0__addcompany_vue___default.a
@@ -80570,7 +81663,7 @@ var cc = console.log;
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(2)();
-exports.push([module.i, "\n.addcompany {\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.addcompany .companys-wrapper {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.addcompany .companys-wrapper .company-wrapper {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  box-sizing: border-box;\n  padding: 0 2px;\n}\n.addcompany .companys-wrapper .company-wrapper .company-ellipse {\n  min-width: 100px;\n  border-bottom: 2px solid #000;\n  color: #000;\n  text-align: center;\n}\n.addcompany .company-addicon {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 0 30px;\n          flex: 0 0 30px;\n  width: 30px;\n  height: 30px;\n  justify-self: flex-around;\n  box-sizing: border-box;\n  padding: 3px;\n}\n.addcompany .company-addicon .icon-wrapper {\n  width: 100%;\n  border: 1px dotted #000;\n  border-radius: 50%;\n}\n.addcompany .company-addicon .icon-wrapper:active {\n  background: #f00;\n}\n.addcompany .company-addicon .icon-wrapper i {\n  margin: 0 0 0 4.6px;\n}\n.addcompany .fade-enter-active,\n.addcompany .fade-leave-active {\n  -webkit-transition: all 0.2s ease-in;\n  transition: all 0.2s ease-in;\n}\n.addcompany .fade-enter,\n.addcompany .fade-leave-to {\n  -webkit-transform: translateX(20vh);\n          transform: translateX(20vh);\n}\n.addcompany .companys-list {\n  position: fixed;\n  top: 100px;\n  right: 0;\n  width: 20vh;\n  height: calc(62% - 50px);\n  background: #fff;\n}\n.addcompany .companys-list .companys-search {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n}\n.addcompany .companys-list .companys-search input {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  margin: 8px 10px;\n  display: block;\n  height: 24px;\n  line-height: 24px;\n  text-indent: 16px;\n  border: none;\n  border-bottom: 1px solid #000;\n  outline: none;\n}\n.addcompany .companys-list .companys-search .fa-close {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 0 14px;\n          flex: 0 0 14px;\n  width: 14px;\n  margin-right: 8px;\n}\n", ""]);
+exports.push([module.i, "\n.addcompany {\n  position: relative;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.addcompany .companys-wrapper2 {\n  height: 24px;\n  width: 78%;\n  border-bottom: 1px dotted #000;\n}\n.addcompany .companys-wrapper {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -ms-flex-wrap: wrap;\n      flex-wrap: wrap;\n  -ms-flex-pack: distribute;\n      justify-content: space-around;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n}\n.addcompany .companys-wrapper .company-wrapper {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  box-sizing: border-box;\n  padding: 0 2px;\n}\n.addcompany .companys-wrapper .company-wrapper .company-ellipse {\n  min-width: 100px;\n  border-bottom: 2px solid #000;\n  color: #000;\n  text-align: center;\n}\n.addcompany .company-addicon {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 0 30px;\n          flex: 0 0 30px;\n  width: 30px;\n  height: 30px;\n  justify-self: flex-around;\n  box-sizing: border-box;\n  padding: 3px;\n}\n.addcompany .company-addicon .icon-wrapper {\n  width: 100%;\n  border: 1px dotted #000;\n  border-radius: 50%;\n}\n.addcompany .company-addicon .icon-wrapper:active {\n  background: #f00;\n}\n.addcompany .company-addicon .icon-wrapper i {\n  margin: 0 0 0 4.6px;\n}\n.addcompany .fade-enter-active,\n.addcompany .fade-leave-active {\n  -webkit-transition: all 0.2s ease-in;\n  transition: all 0.2s ease-in;\n}\n.addcompany .fade-enter,\n.addcompany .fade-leave-to {\n  -webkit-transform: translateX(20vh);\n          transform: translateX(20vh);\n}\n.addcompany .companys-list {\n  position: fixed;\n  top: 100px;\n  right: 0;\n  width: 20vh;\n  height: calc(62% - 50px);\n  background: #fff;\n}\n.addcompany .companys-list .companys-search {\n  display: -webkit-box;\n  display: -ms-flexbox;\n  display: flex;\n  -webkit-box-align: center;\n      -ms-flex-align: center;\n          align-items: center;\n  width: 100%;\n}\n.addcompany .companys-list .companys-search input {\n  -webkit-box-flex: 1;\n      -ms-flex: 1;\n          flex: 1;\n  margin: 8px 10px;\n  display: block;\n  height: 24px;\n  line-height: 24px;\n  text-indent: 16px;\n  border: none;\n  border-bottom: 1px solid #000;\n  outline: none;\n}\n.addcompany .companys-list .companys-search .fa-close {\n  -webkit-box-flex: 0;\n      -ms-flex: 0 0 14px;\n          flex: 0 0 14px;\n  width: 14px;\n  margin-right: 8px;\n}\n", ""]);
 
 /***/ }),
 /* 136 */
@@ -80625,10 +81718,12 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "company-ellipse",
     on: {
       "click": function($event) {
-        _vm.removecompany()
+        _vm.removeCompany()
       }
     }
-  }, [_vm._v("\n                " + _vm._s(_vm.company.name) + "\n            ")])])]) : _vm._e(), _vm._v(" "), _c('div', {
+  }, [_vm._v("\n                " + _vm._s(_vm.company.name) + "\n            ")])])]) : _vm._e(), _vm._v(" "), (!_vm.company) ? _c('div', {
+    staticClass: "companys-wrapper2 text-center"
+  }, [_vm._v("\n                " + _vm._s(_vm.customer_name) + "\n    ")]) : _vm._e(), _vm._v(" "), _c('div', {
     staticClass: "company-addicon"
   }, [_c('div', {
     staticClass: "icon-wrapper",
@@ -80660,17 +81755,13 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     }],
     attrs: {
       "type": "text",
+      "input": _vm.search(),
       "placeholder": "输入公司名"
     },
     domProps: {
       "value": (_vm.companyName)
     },
     on: {
-      "keyup": function($event) {
-        if (_vm._k($event.keyCode, "enter", 13)) { return null; }
-        $event.preventDefault();
-        _vm.search(_vm.companyName)
-      },
       "input": function($event) {
         if ($event.target.composing) { return; }
         _vm.companyName = $event.target.value
@@ -80849,6 +81940,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 
 var cc = console.log;
@@ -80858,14 +81956,26 @@ var cc = console.log;
             companyName: '',
             listFlag: false,
             rows: [{ id: 1, name: "海力士" }, { id: 1, name: "海格" }, { id: 1, name: "还公共" }],
-            company: {}
+            company: null
         };
     },
 
+    props: {
+        //            注意：这个联系人的单位名称传入仅为显示名称，其不参与event，外面在toggleEdit时已经把单位名赋给cus22作为初始数据了。
+        customer_name: {
+            type: String
+        }
+    },
     methods: {
-        search: function search(name) {
-            console.log(name);
-        },
+        search: _.debounce(function () {
+            var _this = this;
+
+            axios.get("/searchcus/" + this.companyName).then(function (res) {
+                _this.rows = res.data;
+            }, function (error) {
+                error.status;
+            });
+        }, 300),
         addToList: function addToList(event, company) {
             var e = event || window.event || argucompanysts.callee.caller.argucompanysts[0];
             if (e && e.ctrlKey) {
@@ -80874,19 +81984,246 @@ var cc = console.log;
             }
             this.company = company;
             this.listFlag = false;
-            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('addcompany', this.companys);
+            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('addcompany', this.company);
         },
         addToListMul: function addToListMul(company) {
             this.company = company;
-            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('addcompany', this.companys);
+            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('addcompany', this.company);
         },
         removeCompany: function removeCompany() {
-            this.company = {};
-            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('rmcompany', this.companys);
+            this.company = null;
+            __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$emit('rmcompany', this.company);
         },
         showList: function showList() {
             this.listFlag = !this.listFlag;
         }
+    },
+    mounted: function mounted() {
+        cc(this.customer);
+    }
+};
+
+/***/ }),
+/* 140 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(2)();
+exports.push([module.i, "\n.bounce .bounce-enter-active {\n  -webkit-transition: all 0.3s ease-in;\n  transition: all 0.3s ease-in;\n}\n.bounce .bounce-leave-active {\n  -webkit-transition: all 0.3s ease-in;\n  transition: all 0.3s ease-in;\n  -webkit-transform: translateX(100%);\n          transform: translateX(100%);\n}\n.bounce .bounce-enter {\n  -webkit-transform: translateX(100%);\n          transform: translateX(100%);\n  opacity: 0;\n}\n.bounce .bounce-leave-to {\n  opacity: 0;\n}\n.bounce .bounce-wrapper {\n  position: fixed;\n  top: 60px;\n  right: 0;\n  width: 20%;\n  height: calc(100% - 60px);\n  background: #fdf5e6;\n}\n", ""]);
+
+/***/ }),
+/* 141 */
+/***/ (function(module, exports, __webpack_require__) {
+
+
+/* styles */
+__webpack_require__(143)
+
+var Component = __webpack_require__(4)(
+  /* script */
+  __webpack_require__(144),
+  /* template */
+  __webpack_require__(142),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "D:\\wamp64\\www\\la549\\resources\\assets\\js\\components\\bounce.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] bounce.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-loader/node_modules/vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-04166396", Component.options)
+  } else {
+    hotAPI.reload("data-v-04166396", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 142 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "bounce",
+    on: {
+      "click": _vm.toggle
+    }
+  }, [_c('transition', {
+    attrs: {
+      "name": "bounce"
+    }
+  }, [_c('div', {
+    directives: [{
+      name: "show",
+      rawName: "v-show",
+      value: (_vm.showFlag),
+      expression: "showFlag"
+    }],
+    staticClass: "bounce-wrapper"
+  }, [_c('div', {
+    staticClass: "header"
+  }, [_c('h2', [_vm._v("详细情况")])]), _vm._v(" "), _c('hr'), _vm._v(" "), _c('div', {
+    staticClass: "content"
+  }, [_c('table', {
+    staticClass: "table table-striped text-center"
+  }, [_c('thead', [_c('tr', [_c('td', [_vm._v(_vm._s(_vm.header1))]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.header2))])])]), _vm._v(" "), _c('tbody', _vm._l((_vm.data.data), function(da) {
+    return _c('tr', [(_vm.data.type == 1) ? _c('td', [_vm._v(_vm._s(da.id))]) : _c('td', [_vm._v(_vm._s(da.name))]), _vm._v(" "), (_vm.data.type == 1) ? _c('td', [_vm._v(_vm._s(da.name))]) : _c('td', [_vm._v(_vm._s(_vm.time))])])
+  }))])])])])], 1)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-loader/node_modules/vue-hot-reload-api").rerender("data-v-04166396", module.exports)
+  }
+}
+
+/***/ }),
+/* 143 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(140);
+if(typeof content === 'string') content = [[module.i, content, '']];
+if(content.locals) module.exports = content.locals;
+// add the styles to the DOM
+var update = __webpack_require__(5)("2a28215a", content, false);
+// Hot Module Replacement
+if(false) {
+ // When the styles change, update the <style> tags
+ if(!content.locals) {
+   module.hot.accept("!!../../../../node_modules/.0.14.5@css-loader/index.js!../../../../node_modules/.10.3.0@vue-loader/lib/style-rewriter.js?id=data-v-04166396!../../../../node_modules/stylus-loader/index.js?paths[]=node_modules!../../../../node_modules/.10.3.0@vue-loader/lib/selector.js?type=styles&index=0!./bounce.vue", function() {
+     var newContent = require("!!../../../../node_modules/.0.14.5@css-loader/index.js!../../../../node_modules/.10.3.0@vue-loader/lib/style-rewriter.js?id=data-v-04166396!../../../../node_modules/stylus-loader/index.js?paths[]=node_modules!../../../../node_modules/.10.3.0@vue-loader/lib/selector.js?type=styles&index=0!./bounce.vue");
+     if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+     update(newContent);
+   });
+ }
+ // When the module is disposed, remove the <style> tags
+ module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 144 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__ = __webpack_require__(14);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+var cc = console.log;
+/* harmony default export */ __webpack_exports__["default"] = {
+    data: function data() {
+        return {
+            showFlag: false,
+            data: [],
+            result: [],
+            time: null
+        };
+    },
+
+    methods: {
+        toggle: function toggle() {
+            this.showFlag = !this.showFlag;
+        }
+    },
+    computed: {
+        header1: function header1() {
+            if (this.data.type == 1) {
+                //用户评价
+                return "联系人id";
+            } else if (this.data.type == 2) {
+                //回访
+                return "回访人";
+            }
+        },
+        header2: function header2() {
+            if (this.data.type == 1) {
+                //用户评价
+                return "联系人姓名";
+            } else if (this.data.type == 2) {
+                //回访
+                return "日期";
+            }
+        }
+    },
+    created: function created() {
+        var _this = this;
+
+        __WEBPACK_IMPORTED_MODULE_0__utils_eventBus__["a" /* default */].$on('bounce', function (data) {
+            _this.data = data;
+
+            if (data.type == 2) {
+                _this.time = data.time;
+            }
+
+            _this.toggle();
+        });
     },
     mounted: function mounted() {}
 };

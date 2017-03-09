@@ -345,9 +345,12 @@
             }
         },
         methods:{
-          toggleEdit(contract){
+            toggleEdit(contract){
+                cc(1)
               this.editFlag = !this.editFlag
-              this.contract1 = Object.assign({},this.contract1, contract)
+              if (this.editFlag){
+                  this.contract1 = Object.assign({},this.contract1, contract)
+              }
           },
             toggleNew(){
               this.newFlag = !this.newFlag

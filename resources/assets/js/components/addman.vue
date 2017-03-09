@@ -139,35 +139,36 @@
                    }
               this.men.push(man)
               this.listFlag = false
-              if (this.type == 1){
-                  Bus.$emit('addserviser', this.men)
-              } else if(this.type == 2){
-                  Bus.$emit('addcus', this.men)
-              }else if(this.type == 3){
-                  Bus.$emit('addvisitor', this.men)
-              }
-          },
-          addToListMul(man){
-              this.men.push(man)
-              if (this.type == 1){
-                  Bus.$emit('addserviser', this.men)
-              } else if(this.type == 2){
-                  Bus.$emit('addcus', this.men)
-              }else if(this.type == 3){
-                  Bus.$emit('addvisitor', this.men)
-              }
-          },
-          removeMan(man){
-              let index = this.men.indexOf(man)
-              this.men.splice(index, 1)
-              if (this.type == 1){
-                  Bus.$emit('rmserviser', this.men)
-              } else if(this.type == 2){
-                  Bus.$emit('rmcus', this.men)
-              } else if(this.type == 3){
-                  Bus.$emit('rmvisitor', this.men)
+                  if (this.type == 1){
+                      Bus.$emit('addserviser', this.men)
+                  } else if(this.type == 2){
+                      Bus.$emit('addcus', this.men)
+                  }else if(this.type == 3){
+                      Bus.$emit('addvisitor', this.men)
               }
 
+          },
+          addToListMul(man){
+                  this.men.push(man)
+                  if (this.type == 1) {
+                      Bus.$emit('addserviser', this.men)
+                  } else if (this.type == 2) {
+                      Bus.$emit('addcus', this.men)
+                  } else if (this.type == 3) {
+                      Bus.$emit('addvisitor', this.men)
+                  }
+          },
+          removeMan(man){
+                  let index = this.men.indexOf(man)
+                  this.men.splice(index, 1)
+
+                  if (this.type == 1){
+                      Bus.$emit('rmserviser', this.men)
+                  } else if(this.type == 2){
+                      Bus.$emit('rmcus', this.men)
+                  } else if(this.type == 3){
+                      Bus.$emit('rmvisitor', this.men)
+                  }
           },
           showList(){
               this.listFlag = !this.listFlag

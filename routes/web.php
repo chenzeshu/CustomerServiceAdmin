@@ -16,12 +16,14 @@ Route::get('/home', 'HomeController@index');
 Auth::routes();
 
 
+//搜索返回类似客户的名称与id
+Route::get('searchcus/{cus_name}','CustomersController@showList');
 //直接查看该客户下所有的服务单，还没有写
 Route::get('customers/{cus_id}/services','CustomersController@showServices');
 
-
+Route::resource('users', 'UsersController');
 Route::resource('customers', 'CustomersController');
-Route::resource('customers2', 'Customer2sController');
+Route::resource('customer2s', 'Customer2sController');
 Route::resource('contracts', 'ContractsController');
 Route::resource('services', 'ServicesController');
 Route::resource('duties', 'DutiesController');

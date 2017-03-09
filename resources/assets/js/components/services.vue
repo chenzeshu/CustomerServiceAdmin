@@ -6,15 +6,15 @@
         <table class="table table-striped table-hover">
             <thead class="self-font-weight-700 text-center">
             <tr>
-                <th width="100">内部受理编号</th>
-                <th width="150">信息来源</th>
-                <th width="100">问题描述</th>
-                <th width="100">服务人员</th>
-                <th width="100">收费情况</th>
-                <th>用户评价</th>
-                <th>处理状态<i class="fa fa-btn fa-caret-square-o-down"></i></th>
-                <th width="100">回访情况</th>
-                <th colspan="2">操作</th>
+                <td width="100">内部受理编号</td>
+                <td width="150">信息来源</td>
+                <td widtd="100">问题描述</td>
+                <td width="150">服务人员</td>
+                <td width="100">收费情况</td>
+                <td>用户评价</td>
+                <td>处理状态<i class="fa fa-btn fa-caret-square-o-down"></i></td>
+                <td width="100">回访情况</td>
+                <td colspan="2">操作</td>
             </tr>
             </thead>
             <tbody class="text-center">
@@ -23,40 +23,45 @@
                     <td>{{ service.source }}</td>
                     <td><div @click="descQuestion(service.desc1)"
                             class="btn btn-default btn-sm">问题描述</div></td>
-                    <td>{{ service.serviser }}</td>
+                    <td>
+                        <span v-for="person in service.serviser" class="single-floor">
+                        {{ person.name }}
+                        </span>
+                    </td>
                     <td>
                         <span v-if="service.charge_if === 0">不收费</span>
                         <span v-else>收费</span>
                     </td>
-                    <!--服务评价-->
+                    <!--客户评价-->
                     <td>
-                        <div v-if="service.rating===0" class="btn btn-success btn-sm" @click="customer(service)">非常满意</div>
-                        <div v-if="service.rating===1" class="btn btn-primary btn-sm" @click="customer(service)">满意</div>
-                        <div v-if="service.rating===2" class="btn btn-warning btn-sm" @click="customer(service)">一般</div>
-                        <div v-if="service.rating===3" class="btn btn-danger btn-sm" @click="customer(service)">不满意</div>
-                        <div v-if="service.rating===4" class="btn btn-default btn-sm" @click="customer(service)">未评价</div>
+                        <div v-if="service.rating===0" class="btn btn-success btn-sm" @click="customer(service.customer2)">非常满意</div>
+                        <div v-if="service.rating===1" class="btn btn-primary btn-sm" @click="customer(service.customer2)">满意</div>
+                        <div v-if="service.rating===2" class="btn btn-warning btn-sm" @click="customer(service.customer2)">一般</div>
+                        <div v-if="service.rating===3" class="btn btn-danger btn-sm" @click="customer(service.customer2)">不满意</div>
+                        <div v-if="service.rating===4" class="btn btn-default btn-sm" @click="customer(service.customer2)">未评价</div>
                     </td>
-                    <!--是否解决-->
+                    <!--处理结果-->
                     <td>
                         <div v-if="service.result_deal===0" class="btn btn-warning btn-sm" @click="descSolve(service)">待解决</div>
                         <div v-if="service.result_deal===1" class="btn btn-success btn-sm" @click="descSolve(service)">{{service.time1}}</div>
                         <div v-if="service.result_deal===2" class="btn btn-danger btn-sm" @click="descSolve(service)">未解决</div>
                     </td>
-                    <!--回访-->
+                    <!--回访评价-->
                     <td>
-                        <div v-if="service.result_visit===0" class="btn btn-success btn-sm" @click="visit(service)">非常满意</div>
-                        <div v-if="service.result_visit===1" class="btn btn-primary btn-sm" @click="visit(service)">满意</div>
-                        <div v-if="service.result_visit===2" class="btn btn-warning btn-sm" @click="visit(service)">一般</div>
-                        <div v-if="service.result_visit===3" class="btn btn-danger btn-sm" @click="visit(service)">不满意</div>
+                        <div v-if="service.result_visit===0" class="btn btn-success btn-sm" @click="visit(service.visitor,service.time3)">非常满意</div>
+                        <div v-if="service.result_visit===1" class="btn btn-primary btn-sm" @click="visit(service.visitor,service.time3)">满意</div>
+                        <div v-if="service.result_visit===2" class="btn btn-warning btn-sm" @click="visit(service.visitor,service.time3)">一般</div>
+                        <div v-if="service.result_visit===3" class="btn btn-danger btn-sm" @click="visit(service.visitor,service.time3)">不满意</div>
                         <div v-if="service.result_visit===4" class="btn btn-default btn-sm">未回访</div>
                     </td>
                     <td class="service-item-edit">
-                        <i class="fa fa-btn fa-cog"></i>
-                        <i class="fa fa-btn fa-close"></i>
+                        <i class="fa fa-btn fa-cog" @click="toggleEdit(service)"></i>
+                        <i class="fa fa-btn fa-close" @click="deleteConfirmService(service.id)"></i>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <!--增加新服务-->
         <transition name="fade">
             <div class="new-wrapper" v-show="newFlag">
                 <div class="modal-header">
@@ -286,6 +291,238 @@
                 </form>
             </div>
         </transition>
+        <!--修改服务-->
+        <transition name="fade">
+            <div class="new-wrapper" v-show="editFlag">
+                <div class="modal-header">
+                    <button type="button" class="close" @click="toggleEdit"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">新建服务</h4>
+                </div>
+                <br>
+
+                <form class="form-horizontal width-100per-margin-auto">
+                    <div class="info-container">
+                        <!--信息来源-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">信息来源</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <select v-model="editService.source" class="form-control">
+                                            <option v-for="source in basic.sources" :value="source.value">{{ source.text }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--服务类型-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">服务类型</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-8">
+                                        <select class="form-control" v-model="editService.type">
+                                            <option v-for="type in basic.types" :value="type.value">{{ type.text }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--受理时间-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">受理时间</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <el-date-picker
+                                                v-model="editService.time1" type="date" placeholder="选择受理日期"
+                                                :format="datepicker.format"
+                                                :size="datepicker.size" :editable="datepicker.editable">
+                                        </el-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--问题描述-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">问题描述</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <textarea v-model="editService.desc1" class="form-control" cols="60" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--服务人员--组件传值>-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">服务人员</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <addman :type="1"></addman>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--是否收费radio-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">是否收费</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10 form-inline">
+                                        <div class="radio" v-for="charge in basic.charge_if">
+                                            <label>
+                                                <input type="radio" name="type" :value="charge.value" v-model="editService.charge_if">
+                                                {{ charge.text }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--客户联系人，目前一级，后面有空做成二级：点击显示客户列表-》选择客户-》出现该客户下的联系人-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">客户联系人</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <addman :type="2"></addman>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--完工时间-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">完工时间</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <el-date-picker
+                                                v-model="editService.time2" type="date" placeholder="选择完工日期"
+                                                :format="datepicker.format"
+                                                :size="datepicker.size" :editable="datepicker.editable">
+                                        </el-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--处理描述-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">处理描述</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <textarea v-model="editService.desc2" class="form-control" cols="60" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--处理结果radio-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">处理结果</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10 form-inline">
+                                        <div class="radio" v-for="result in basic.result_deal">
+                                            <label>
+                                                <input type="radio" name="bao" :value="result.value" v-model="editService.result_deal">
+                                                {{ result.text }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--备注派生-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">备注派生</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <textarea v-model="editService.remark" class="form-control" cols="60" rows="3"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--客户评价radio-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">客户评价</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10 form-inline">
+                                        <div class="radio" v-for="rating in basic.ratings">
+                                            <label>
+                                                <input type="radio" name="rating" v-model="editService.rating" :value="rating.value">
+                                                {{ rating.text }}
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--回访人员--组件传值>-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回访人员</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <addman :type="3"></addman>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--回访时间-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回访时间</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <el-date-picker
+                                                v-model="editService.time3" type="date" placeholder="选择回访日期"
+                                                :format="datepicker.format"
+                                                :size="datepicker.size" :editable="datepicker.editable">
+                                        </el-date-picker>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--占用工时-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回访时间（单位0.5天）</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <input class="form-control" placeholder="请填写整数" v-model.number="editService.time4">
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <span class="time4">× 0.5天</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--上传文件-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">上传文件（暂时不做）</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10">
+                                        <input type="file">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-offset-4 col-sm-10">
+                            <div class="btn btn-default" @click="updateService(editService)">修改服务单</div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </transition>
+        <!--侧栏信息:type1:客户联系人 tpye2:回访情况-->
+        <bounce></bounce>
     </div>
 </template>
 
@@ -377,12 +614,13 @@
 <script type="text/ecmascript">
     import Bus from '../utils/eventBus'
     import addman from './addman.vue'
+    import bounce from './bounce.vue'
     var cc = console.log;
     export default {
         data(){
             return {
-                newFlag:true,
-                editFlag:true,
+                newFlag:false,
+                editFlag:false,
                 datepicker:{
                   size:"small",
                   editable:false,
@@ -432,15 +670,15 @@
                     charge_if:0, //默认不收费
                     contract_id:this.contract_id,//母合同编号,
                     customer2:[
-                        {cus2_id:1, cus2:"土豪"}  //一般就一个，以防万一
+                        {}  //一般就一个，以防万一
                     ],
                     time1:null,
                     desc2:null,
                     result_deal:0, //默认待解决
                     remark:null,
                     rating:4, //默认未评价
-                    vistor:[
-                        {id:1, name:"土豪"}  //用于测试
+                    visitor:[
+                        {}  //用于测试
                     ],
                     time2:null,
                     result_visit:4, //默认未回访
@@ -498,59 +736,72 @@
 `
                 });
             },
-            customer(service){
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-rim2', //加上边框
-                    area: ['380px', '180px'], //宽高
-                    content: `
-                <table class="table table-striped text-center">
-                <tr>
-                    <td>客户联系人id</td>
-                    <td>客户联系人</td>
-                </tr>
-                <tr>
-                    <td>${service.customer2_id}</td>
-                    <td>${service.customer2}</td>
-</tr>
-</table>
-`
-                })
+            customer(customer2){
+                Bus.$emit('bounce', {type:1, data:customer2})
             },
-            visit(service){
-                layer.open({
-                    type: 1,
-                    skin: 'layui-layer-rim2', //加上边框
-                    area: ['380px', '180px'], //宽高
-                    content: `
-                <table class="table table-striped text-center">
-                <tr>
-
-                    <td>回访人</td>
-                    <td>回访日期</td>
-                </tr>
-                <tr>
-                    <td>${service.vistor}</td>
-                    <td>${service.time2}</td>
-</tr>
-</table>
-`
-                })
+            visit(visitor, time){
+                Bus.$emit('bounce', {type:2, data:visitor, time:time})
             },
             toggleNew(){
                 this.newFlag = ! this.newFlag
             },
+            toggleEdit(service){
+                this.editFlag = ! this.editFlag
+                this.editService = Object.assign({}, service )
+                cc(this.editService)
+            },
             addService(service){
                 axios.post('/services', service).then((res)=>{
-                    res = res.data
-                    console.log(res)
-                },(error)=>{
-                    error.status
+                    layer.msg("新增成功", {icon: 6});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },900)
+                    this.newFlag = false
+                },error=>{
+                    layer.msg("新增失败，请检查", {icon: 5});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },900)
                 })
             },
-            updateService(){
-
+            updateService(service){
+                var id = service.id
+                axios.patch('/services/'+id, service).then((res)=>{
+                    layer.msg("更新成功", {icon: 6});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },900)
+                    this.newFlag = false
+                },error=>{
+                    error.status
+                    layer.msg("更新失败，请检查", {icon: 5});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },900)
+                })
             },
+            deleteConfirmService(id){
+                layer.confirm('确定要删除这条服务记录？', {
+                    btn: ['确定','取消'] //按钮
+                }, ()=>{
+                    this.deleteService(id)
+                });
+            },
+            deleteService(id){
+                axios.delete('/services/'+id).then((res)=>{
+                    layer.msg("删除成功", {icon: 6});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },900)
+                    this.newFlag = false
+                },error=>{
+                    error.status
+                    layer.msg("删除失败，请检查", {icon: 5});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },900)
+                })
+            }
         },
         mounted() {
         },
@@ -559,26 +810,50 @@
             //可想而知，当还要扩展已解决和未解决时，会有10次。
             //目前先传v-service type + result_deal解决，后期全部vue化
             Bus.$on('addserviser', data=>{
-                this.newService.serviser = data
+                if (this.newFlag){
+                    this.newService.serviser = data
+                }else if (this.editFlag){
+                    this.editService.serviser = data
+                }
             })
             Bus.$on('addcus', data=>{
-                this.newService.serviser = data
+                if (this.newFlag){
+                    this.newService.customer2 = data
+                }else if (this.editFlag){
+                    this.editService.customer2 = data
+                }
             })
             Bus.$on('addvisitor', data=>{
-                this.newService.serviser = data
+                if (this.newFlag){
+                    this.newService.visitor = data
+                }else if (this.editFlag){
+                    this.editService.visitor = data
+                }
             })
             Bus.$on('rmserviser', data=>{
-                this.newService.serviser = data
+                if (this.newFlag){
+                    this.newService.serviser = data
+                }else if (this.editFlag){
+                    this.editService.serviser = data
+                }
             })
             Bus.$on('rmcus', data=>{
-                this.newService.serviser = data
+                if (this.newFlag){
+                    this.newService.customer2 = data
+                }else if (this.editFlag){
+                    this.editService.customer2 = data
+                }
             })
             Bus.$on('rmvisitor', data=>{
-                this.newService.serviser = data
+                if (this.newFlag){
+                    this.newService.visitor = data
+                }else if (this.editFlag){
+                    this.editService.visitor = data
+                }
             })
         },
         components:{
-            addman
+            addman, bounce
         }
     }
 </script>

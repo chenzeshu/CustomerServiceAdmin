@@ -50,7 +50,7 @@
                     </ul>
                     <ul class="nav navbar-nav">
                         <li>{{ link_to_route('customers.index', '客户信息库') }}</li>
-                        <li><a href="#">Link</a></li>
+                        <li>{{ link_to_route('users.index', '员工信息库') }}</li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

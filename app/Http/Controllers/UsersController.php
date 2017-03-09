@@ -2,22 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Customer;
-use App\Http\Requests\CreateCustomerRequest;
-use App\Http\Requests\UpdateCustomerRequest;
-use App\Repositories\CustomerRepository;
+use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Redirect;
 
-class CustomersController extends Controller
+class UsersController extends Controller
 {
-    protected $cus;
-
-    public function __construct(CustomerRepository $cus)
-    {
-        $this->middleware('auth');
-        $this->cus = $cus;
-    }
     /**
      * Display a listing of the resource.
      *
@@ -25,8 +14,8 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        $customers = Customer::all();
-        return view('customers.index', compact('customers'));
+        $users = User::all()->except('password');
+        return view('users.index', compact('users'));
     }
 
     /**
@@ -36,7 +25,7 @@ class CustomersController extends Controller
      */
     public function create()
     {
-        dd(1);
+        //
     }
 
     /**
@@ -45,10 +34,9 @@ class CustomersController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(CreateCustomerRequest $request)
+    public function store(Request $request)
     {
-        $this->cus->newCustomer($request);
-        return Redirect::back();
+        //
     }
 
     /**
@@ -59,9 +47,8 @@ class CustomersController extends Controller
      */
     public function show($id)
     {
-        $contracts = Customer::findOrFail($id)->contracts()->get();
-        $cus2s = Customer::findOrFail($id)->customer2s()->get();
-        return view('customers.show', compact('contracts','id','cus2s'));
+        $duties = User::findOrFail($id)->duties()->get();
+        return view('users.show',compact('duties'));
     }
 
     /**
@@ -72,7 +59,7 @@ class CustomersController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -82,10 +69,9 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomerRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        $this->cus->updateCustomer($request, $id);
-        return Redirect::back();
+        //
     }
 
     /**
@@ -96,14 +82,6 @@ class CustomersController extends Controller
      */
     public function destroy($id)
     {
-        Customer::findOrFail($id)->delete();
-        return Redirect::back();
-    }
-
-    public function showList($name)
-    {
-        $companies = Customer::where('name', 'like',"%".$name."%")->select('id', 'name')->limit(10)->get();
-
-        return $companies;
+        //
     }
 }

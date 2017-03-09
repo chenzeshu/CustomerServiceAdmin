@@ -3,12 +3,14 @@
         <div class="companys-wrapper" v-if="company">
             <!--特别注意：company.name为null时不可提交，还没有设置-->
             <div class="company-wrapper touch">
-                <div class="company-ellipse" @click="removecompany()">
+                <div class="company-ellipse" @click="removeCompany()">
                     {{ company.name }}
                 </div>
             </div>
         </div>
-
+        <div class="companys-wrapper2 text-center" v-if="!company">
+                    {{customer_name}}
+        </div>
         <!--添加符号-->
         <div class="company-addicon">
             <div class="icon-wrapper" @click="showList">
@@ -19,7 +21,8 @@
         <transition name="fade">
             <div class="companys-list" v-show="listFlag">
                 <div class="companys-search">
-                    <input type="text" v-model="companyName" @keyup.enter.prevent="search(companyName)" placeholder="输入公司名">
+                    <!--@keyup.enter.prevent="search(companyName)"-->
+                    <input type="text" v-model="companyName"  :input="search()" placeholder="输入公司名">
                     <i class="fa fa-btn fa-close" @click="showList"></i>
                 </div>
                 <div class="companys-result">
@@ -42,6 +45,10 @@
         display flex
         justify-content space-around
         align-items center
+        .companys-wrapper2
+            height: 24px;
+            width: 78%
+            border-bottom: 1px dotted #000;
         .companys-wrapper
             flex 1
             display flex
@@ -118,14 +125,24 @@
                     {id:1, name:"海格"},
                     {id:1, name:"还公共"},
                 ],
-                company: {
-                }
+                company: null
+            }
+        },
+        props:{
+//            注意：这个联系人的单位名称传入仅为显示名称，其不参与event，外面在toggleEdit时已经把单位名赋给cus22作为初始数据了。
+            customer_name:{
+                type:String,
             }
         },
         methods:{
-            search(name){
-                console.log(name)
-            },
+            search: _.debounce(function(){
+                axios.get("/searchcus/"+this.companyName).then(res=>{
+                    this.rows = res.data
+
+                },error=>{
+                    error.status
+                })
+            },300),
             addToList(event, company){
                 var e = event || window.event || argucompanysts.callee.caller.argucompanysts[0];
                 if(e && e.ctrlKey){ //如果同时按下了ctrl，本方法就停止
@@ -133,15 +150,15 @@
                 }
                 this.company = company
                 this.listFlag = false
-                Bus.$emit('addcompany', this.companys)
+                Bus.$emit('addcompany', this.company)
             },
             addToListMul(company){
                 this.company = company
-                Bus.$emit('addcompany', this.companys)
+                Bus.$emit('addcompany', this.company)
             },
             removeCompany(){
-                this.company = {}
-                Bus.$emit('rmcompany', this.companys)
+                this.company = null
+                Bus.$emit('rmcompany', this.company)
 
             },
             showList(){
@@ -149,7 +166,7 @@
             }
         },
         mounted() {
-
+            cc(this.customer)
         }
     }
 </script>
