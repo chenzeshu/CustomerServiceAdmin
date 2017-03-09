@@ -17,4 +17,9 @@ class Customer extends Model
     {
         return $this->hasManyThrough('App\Service', 'App\Customer');
     }
+
+    public function customer2s()
+    {
+        return $this->hasMany('App\Customer2','customer_name', 'name');
+    }
 }

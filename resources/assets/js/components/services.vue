@@ -3,18 +3,18 @@
         <div class="newService" @click="toggleNew">
             <i class="fa fa-btn fa-plus"></i>
         </div>
-        <table class="table table-striped">
+        <table class="table table-striped table-hover">
             <thead class="self-font-weight-700 text-center">
             <tr>
-                <td width="100">内部受理编号</td>
-                <td width="150">信息来源</td>
-                <td width="100">问题描述</td>
-                <td width="100">服务人员</td>
-                <td width="100">收费情况</td>
-                <td>用户评价</td>
-                <td>处理状态<i class="fa fa-btn fa-caret-square-o-down"></i></td>
-                <td width="100">回访情况</td>
-                <td colspan="2">操作</td>
+                <th width="100">内部受理编号</th>
+                <th width="150">信息来源</th>
+                <th width="100">问题描述</th>
+                <th width="100">服务人员</th>
+                <th width="100">收费情况</th>
+                <th>用户评价</th>
+                <th>处理状态<i class="fa fa-btn fa-caret-square-o-down"></i></th>
+                <th width="100">回访情况</th>
+                <th colspan="2">操作</th>
             </tr>
             </thead>
             <tbody class="text-center">
@@ -28,6 +28,7 @@
                         <span v-if="service.charge_if === 0">不收费</span>
                         <span v-else>收费</span>
                     </td>
+                    <!--服务评价-->
                     <td>
                         <div v-if="service.rating===0" class="btn btn-success btn-sm" @click="customer(service)">非常满意</div>
                         <div v-if="service.rating===1" class="btn btn-primary btn-sm" @click="customer(service)">满意</div>
@@ -35,11 +36,13 @@
                         <div v-if="service.rating===3" class="btn btn-danger btn-sm" @click="customer(service)">不满意</div>
                         <div v-if="service.rating===4" class="btn btn-default btn-sm" @click="customer(service)">未评价</div>
                     </td>
+                    <!--是否解决-->
                     <td>
                         <div v-if="service.result_deal===0" class="btn btn-warning btn-sm" @click="descSolve(service)">待解决</div>
                         <div v-if="service.result_deal===1" class="btn btn-success btn-sm" @click="descSolve(service)">{{service.time1}}</div>
                         <div v-if="service.result_deal===2" class="btn btn-danger btn-sm" @click="descSolve(service)">未解决</div>
                     </td>
+                    <!--回访-->
                     <td>
                         <div v-if="service.result_visit===0" class="btn btn-success btn-sm" @click="visit(service)">非常满意</div>
                         <div v-if="service.result_visit===1" class="btn btn-primary btn-sm" @click="visit(service)">满意</div>
@@ -70,9 +73,8 @@
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-xs-8">
-                                        <select v-model="basic.sourcesSelected" class="form-control">
-                                            <option v-model="newService.source"
-                                                    v-for="source in basic.sources" :value="source.value">{{ source.text }}</option>
+                                        <select v-model="newService.source" class="form-control">
+                                            <option v-for="source in basic.sources" :value="source.value">{{ source.text }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -84,9 +86,8 @@
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-xs-8">
-                                        <select v-model="basic.typesSelected" class="form-control">
-                                            <option v-model="newService.type"
-                                                    v-for="type in basic.types" :value="type.value">{{ type.text }}</option>
+                                        <select class="form-control" v-model="newService.type">
+                                            <option v-for="type in basic.types" :value="type.value">{{ type.text }}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -98,8 +99,11 @@
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-xs-10">
-                                        <input v-model="newService.time1" placeholder="请选择受理时间"
-                                               class="form-control laydate-icon margin-top-10" onclick="laydate()">
+                                        <el-date-picker
+                                                v-model="newService.time1" type="date" placeholder="选择受理日期"
+                                                :format="datepicker.format"
+                                                :size="datepicker.size" :editable="datepicker.editable">
+                                        </el-date-picker>
                                     </div>
                                 </div>
                             </div>
@@ -126,7 +130,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--服务类型radio-->
+                        <!--是否收费radio-->
                         <div class="form-group">
                             <label class="col-sm-3 control-label">是否收费</label>
                             <div class="col-sm-8">
@@ -159,8 +163,11 @@
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-xs-10">
-                                        <input placeholder="请选择完工时间" v-model="newService.time2"
-                                               class="form-control laydate-icon margin-top-10" onclick="laydate()">
+                                        <el-date-picker
+                                                v-model="newService.time2" type="date" placeholder="选择完工日期"
+                                                :format="datepicker.format"
+                                                :size="datepicker.size" :editable="datepicker.editable">
+                                        </el-date-picker>
                                     </div>
                                 </div>
                             </div>
@@ -219,7 +226,7 @@
                                 </div>
                             </div>
                         </div>
-                        <!--回访人员--组件传值>
+                        <!--回访人员--组件传值>-->
                         <div class="form-group">
                             <label class="col-sm-3 control-label">回访人员</label>
                             <div class="col-sm-8">
@@ -236,8 +243,11 @@
                             <div class="col-sm-8">
                                 <div class="row">
                                     <div class="col-xs-10">
-                                        <input placeholder="请选择回访时间" v-model="newService.time3"
-                                               class="form-control laydate-icon margin-top-10" onclick="laydate()">
+                                        <el-date-picker
+                                                v-model="newService.time3" type="date" placeholder="选择回访日期"
+                                                :format="datepicker.format"
+                                        :size="datepicker.size" :editable="datepicker.editable">
+                                        </el-date-picker>
                                     </div>
                                 </div>
                             </div>
@@ -373,6 +383,11 @@
             return {
                 newFlag:true,
                 editFlag:true,
+                datepicker:{
+                  size:"small",
+                  editable:false,
+                  format:"yyyy-MM-dd"
+                },
                 basic:{
                     sourcesSelected:0,
                     sources:[
@@ -408,8 +423,8 @@
                     desc1:null,
                 },
                 newService:{
-                    source:null,  //默认400电话
-                    type:null,    //默认故障处理
+                    source:0,  //默认400电话
+                    type:0,    //默认故障处理
                     desc1:null,
                     serviser:[
                         {user_id:1, name:"张小龙"}

@@ -60,7 +60,8 @@ class CustomersController extends Controller
     public function show($id)
     {
         $contracts = Customer::findOrFail($id)->contracts()->get();
-        return view('customers.show', compact('contracts','id'));
+        $cus2s = Customer::findOrFail($id)->customer2s()->get();
+        return view('customers.show', compact('contracts','id','cus2s'));
     }
 
     /**

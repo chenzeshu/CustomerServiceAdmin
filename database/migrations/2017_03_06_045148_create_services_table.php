@@ -31,7 +31,7 @@ class CreateServicesTable extends Migration
             $table->integer('result_deal')->default(0); //处理结果 0：待解决，1：已解决，2：待解决
             $table->text('remark')->nullable(); //备注（派生）
             $table->integer('rating')->default(4); //评价：0：非常满意，1：满意，2：一般，3：不满意，4：未评价
-            $table->string('vistor')->nullable(); //回访人员
+            $table->string('visitor')->nullable(); //回访人员
             $table->integer('result_visit')->default(4); //回访结果 0：非常满意，1：满意，2：一般，3：不满意，4：未回访
             $table->integer('time4')->nullable(); //占用工时单位0.5天
             $table->string('files')->nullable(); //数组

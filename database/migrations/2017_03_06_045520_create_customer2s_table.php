@@ -16,7 +16,7 @@ class CreateCustomer2sTable extends Migration
         Schema::create('customer2s', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('customer_id');
+            $table->string('customer_name');
             $table->string('phone');
             //...其他后续添加
             $table->timestamps();

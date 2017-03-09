@@ -29,6 +29,10 @@
                                onclick="goPosition(this)">维保</a></li>
                     </ul>
                 </li>
+                <li role="presentation">
+                    <a href="#cus2" aria-controls="settings" role="tab" data-toggle="tab" data-content="7"
+                       onclick="goPosition(this)">客户联系人</a>
+                </li>
 
             </ul>
             {{--销售 对应id dropdown1 2 3  客服对应id dropdown4 5 6--}}
@@ -50,6 +54,10 @@
                 </div>
                 <div role="tabpanel" class="tab-pane fade" id="dropdown6" aria-labelledby="dropdown1-tab" data-content="3">
                     <v-contracts :fresh-contracts="{{$contracts}}" :type="1" :active="2" :parent-id="{{ $id }}"></v-contracts>
+                </div>
+                {{--客户联系人--}}
+                <div role="tabpanel" class="tab-pane" id="cus2">
+                    <v-customer2 :cus2s="{{ $cus2s }}"></v-customer2>
                 </div>
             </div>
         </div><!-- /example -->
