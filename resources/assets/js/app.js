@@ -1,11 +1,12 @@
 require('./bootstrap');
-import { DatePicker } from 'element-ui'
+import { DatePicker, Pagination } from 'element-ui'
 import 'element-ui/lib/theme-default/index.css'
 window.axios.defaults.headers.common = {
     'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
     'X-Requested-With': 'XMLHttpRequest'
 };
 Vue.use(DatePicker)
+Vue.use(Pagination)
 Vue.component('v-contracts', require('./components/contracts.vue'));
 Vue.component('v-services', require('./components/services.vue'));
 Vue.component('v-customer2', require('./components/customer2/customer2.vue'));

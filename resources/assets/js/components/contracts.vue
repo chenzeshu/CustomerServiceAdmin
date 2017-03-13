@@ -19,8 +19,8 @@
                 <tr v-for="contract of contracts">
                     <td>{{contract.contract_id}}</td>
                     <td><a :href="'/contracts/'+ contract.id ">{{contract.name}}</a></td>
-                    <td>{{contract.pm}}</td>
-                    <td>{{contract.tm}}</td>
+                    <td><span v-for="p in contract.pm">{{ p.name }}</span></td>
+                    <td><span v-for="t in contract.tm">{{ t.name }}</span></td>
                     <td>{{contract.sum}}</td>
                     <td v-if="contract.active === 0">在保</td>
                     <td v-if="contract.active === 1">过保</td>
@@ -53,22 +53,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">合同编号</label>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <input type="text" class="form-control" v-model="newContract.contract_id">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!--合同编号-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">合同编号</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-xs-12">-->
+                                    <!--<input type="text" class="form-control" v-model="newContract.contract_id">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-group">
                         <label  class="col-sm-3 control-label">项目经理</label>
                         <div class="col-sm-8">
                             <div class="row">
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" v-model="newContract.pm">
+                                    <addman :type="1" :men="newContract.pm"></addman>
+                                    <!--<input type="text" class="form-control" v-model="newContract.pm">-->
                                 </div>
                             </div>
                         </div>
@@ -78,7 +80,7 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" v-model="newContract.tm">
+                                    <addman :type="1" :men="newContract.tm"></addman>
                                 </div>
                             </div>
                         </div>
@@ -172,22 +174,23 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-3 control-label">合同编号</label>
-                        <div class="col-sm-8">
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <input type="text" class="form-control" v-model.lazy="contract1.contractId">
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <!--合同编号-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">合同编号</label>-->
+                        <!--<div class="col-sm-8">-->
+                            <!--<div class="row">-->
+                                <!--<div class="col-xs-12">-->
+                                    <!--<input type="text" class="form-control" v-model.lazy="contract1.contractId">-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <div class="form-group">
                         <label  class="col-sm-3 control-label">项目经理</label>
                         <div class="col-sm-8">
                             <div class="row">
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" v-model.lazy="contract1.pm">
+                                    <addman :type="1" :men="contract1.pm"></addman>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +200,7 @@
                         <div class="col-sm-8">
                             <div class="row">
                                 <div class="col-xs-8">
-                                    <input type="text" class="form-control" v-model.lazy="contract1.tm">
+                                    <addman :type="1" :men="contract1.tm"></addman>
                                 </div>
                             </div>
                         </div>
@@ -305,6 +308,9 @@
 </style>
 
 <script type="text/ecmascript">
+    import Bus from '../utils/eventBus'
+    import addman from './addman.vue'
+
     var cc = console.log;
     export default {
         data(){
@@ -312,10 +318,9 @@
                 editFlag: false,
                 newFlag: false,
                 newContract:{
-                    contract_id:null,
                     name:null,
-                    pm:null,
-                    tm:null,
+                    pm:[],
+                    tm:[],
                     sum:null,
                     type:1,  //默认选择客服
                     active:0, //默认选择在保
@@ -346,7 +351,6 @@
         },
         methods:{
             toggleEdit(contract){
-                cc(1)
               this.editFlag = !this.editFlag
               if (this.editFlag){
                   this.contract1 = Object.assign({},this.contract1, contract)
@@ -358,7 +362,6 @@
             addContract(){
                 let data = {
                     parentId: this.parentId,
-                    contractId: this.newContract.contract_id,
                     type:this.newContract.type,
                     name : this.newContract.name,
                     pm :this.newContract.pm,
@@ -367,28 +370,41 @@
                     sum : this.newContract.sum,
                 }
                 axios.post('/contracts/', data).then((res)=>{
-                    this.newFlag = false
-                    location.href = location.href  //todo 如果时间充足，就在外层做一个总的组件，然后用vuex解决数据更新问题
-                }, (error)=>{
+                    //todo 如果时间充足，就在外层做一个总的组件，然后用vuex解决数据更新问题
+                layer.msg("新建成功", {icon: 6});
+                setTimeout(function(){
+                    location.href = location.href;
+                },900)
+                this.newFlag = false
+            },error=>{
                     error.status
+                    layer.msg("新建失败，请检查", {icon: 5});
+//                    setTimeout(function(){
+//                        location.href = location.href;
+//                    },900)
                 })
             },
             updateContract(contract1){
               let data = {
-                  contractId: contract1.contract_id,
                   name : contract1.name,
                   pm : contract1.pm,
                   tm : contract1.tm,
                   active : contract1.active,
                   sum : contract1.sum,
               }
-              console.log(data)
               axios.patch('/contracts/'+contract1.id, data).then((res)=>{
-                    this.editFlag = false
-                    location.href = location.href  //todo 如果时间充足，就在外层做一个总的组件，然后用vuex解决数据更新问题。当然，对服务器的压力还是没有变。
-              }, (error)=>{
-                  error.status
-              })
+                  layer.msg("更新成功", {icon: 6});
+                setTimeout(function(){
+                    location.href = location.href;
+                },900)
+                this.editFlag = false
+            },error=>{
+                    error.status
+                    layer.msg("更新失败，请检查", {icon: 5});
+                    setTimeout(function(){
+                        location.href = location.href;
+                    },900)
+                })
           },
             deleteConfirmContract(contract){
 //                var _this = this
@@ -426,6 +442,30 @@
             }
         },
         mounted() {
+        },
+        created(){
+            //不设新事件了，直接用已有事件，  serviser对应pm,  visitor对应tm
+            Bus.$on('addserviser', data=>{
+                if (this.newFlag){
+                    this.newContract.pm = data
+                }else if (this.editFlag){
+                    this.contract1 = data
+                }
+
+            })
+            Bus.$on('addvisitor', data=>{
+                if (this.newFlag){
+                    this.newContract.tm = data
+                }else if (this.editFlag){
+                    this.contract1 = data
+                }
+
+            })
+
+
+        },
+        components:{
+            addman
         }
     }
 </script>

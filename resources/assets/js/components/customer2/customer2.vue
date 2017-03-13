@@ -1,4 +1,5 @@
 <template>
+    <!--组件：客户联系人CURD-->
     <div class="customer2">
         <div class="newService" @click="toggleNew">
             <i class="fa fa-btn fa-plus"></i>
@@ -222,7 +223,7 @@
                 })
             },
             deleteConfirm(id){
-                layer.confirm('确定要删除这条合同？', {
+                layer.confirm('确定要删除这个人？', {
                     btn: ['确定','取消'] //按钮
                 }, ()=>{
                     this.deleteCus2(id)

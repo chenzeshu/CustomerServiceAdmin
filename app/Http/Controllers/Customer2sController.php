@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Contract;
 use App\Customer;
 use App\Customer2;
 use Illuminate\Http\Request;
@@ -90,5 +91,21 @@ class Customer2sController extends Controller
     public function destroy($id)
     {
         Customer2::findOrFail($id)->delete();
+    }
+
+    public function showList($contract_id,$name)
+    {
+        if ($name == "all"){
+            $cus2 = Contract::findOrFail($contract_id)
+                ->customer()->first()
+                ->customer2s()->select('id', 'name')->limit(10)->get();
+        }else{
+            $cus2= Contract::findOrFail($contract_id)
+                ->customer()->first()
+                ->customer2s()->where('name', 'like',"%".$name."%")->select('id', 'name')->limit(10)->get();
+        }
+
+
+        return $cus2;
     }
 }

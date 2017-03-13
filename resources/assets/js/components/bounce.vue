@@ -1,4 +1,5 @@
 <template>
+    <!--组件：侧栏展示客户联系人/回访-->
     <div class="bounce" @click="toggle">
         <transition name="bounce">
             <div class="bounce-wrapper" v-show="showFlag">
@@ -47,7 +48,9 @@
             right 0
             width 20%
             height calc(100% - 60px)
-            background #FDF5E6
+            background rgba(253, 245, 230,0.8)
+            .header
+                padding-left 30px
 
 </style>
 

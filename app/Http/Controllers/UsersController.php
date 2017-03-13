@@ -84,4 +84,11 @@ class UsersController extends Controller
     {
         //
     }
+
+    public function showList($name)
+    {
+        $users = User::where('name', 'like',"%".$name."%")->select('id', 'name')->limit(10)->get();
+
+        return $users;
+    }
 }

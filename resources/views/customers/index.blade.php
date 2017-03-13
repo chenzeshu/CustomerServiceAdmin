@@ -38,6 +38,13 @@
                     @include('customers.createCustomerModal')
                 </div>
             </div>
+            <div class="clearfix"></div>
+            <div class="container">
+                <div class="service-index-page">
+                    {{ $customers->links() }}
+                </div>
+            </div>
+
     </div>
 </div>
 @endsection

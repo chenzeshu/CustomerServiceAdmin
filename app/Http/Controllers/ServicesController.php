@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Contract;
+use App\Customer2;
 use App\Repositories\ServicesRepository;
 use App\Service;
+use App\ServiceTask;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use PhpOffice\PhpWord\PhpWord;
+use PhpOffice\PhpWord\SimpleType\Jc;
 
 class ServicesController extends Controller
 {
@@ -89,5 +95,16 @@ class ServicesController extends Controller
     public function destroy($id)
     {
         Service::findOrFail($id)->delete();
+    }
+//    ajax传入客服任务单数据
+    public function createTask(Request $request)
+    {
+        $this->ser->createServiceTask($request);
+    }
+
+//    导出客服任务单.docx
+    public function printTask()
+    {
+        $this->ser->printServiceTask();
     }
 }

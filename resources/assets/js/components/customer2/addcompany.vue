@@ -1,4 +1,5 @@
 <template>
+    <!--组件：添加公司/单位-->
     <div class="addcompany">
         <div class="companys-wrapper" v-if="company">
             <!--特别注意：company.name为null时不可提交，还没有设置-->

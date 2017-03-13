@@ -1,4 +1,5 @@
 <template>
+    <!--侧栏组件：添加员工/客户-->
     <div class="addman">
         <div class="men-wrapper">
             <div class="man-wrapper touch" v-show="men.length" v-for="man in men">
@@ -18,7 +19,7 @@
         <transition name="fade">
             <div class="men-list" v-show="listFlag">
                 <div class="men-search">
-                    <input type="text" v-model="manName" @keyup.enter.prevent="search(manName)">
+                    <input type="text" v-model="manName" :input="search(manName)">
                     <i class="fa fa-btn fa-close" @click="showList"></i>
                 </div>
                 <div class="men-result">
@@ -113,31 +114,54 @@
                 manName:'',
                 listFlag:false,
                 rows:[
-                    {id:1, name:"张小龙1"},
+                    {id:1, name:"测试者"},
+                    {id:1, name:"张小龙"},
                     {id:1, name:"张小龙2"},
-                    {id:1, name:"张小龙3"},
                 ],
-                men:[
-                    {id:1, name:"张小龙0"},
-                ]
+//                men:[
+//                    {id:1, name:"张小龙0"},
+//                ]
             }
         },
         props:{
+            men:{
+              type: Array
+            },
             type:{
                 type:Number   //1:服务员工， 2:客户联系人  3:回访人员
+            },
+            contract_id:{  //用来找对应单位的客户联系人呢用
+                type:Number
             }
         },
         methods:{
-          search(name){
-              console.log(name)
-
-          },
+          search: _.debounce(function () {
+              let id = this.contract_id
+              let name = this.manName ? this.manName : "all"
+                  if(this.type==2){
+                      axios.get(id +'/customer2s/'+name).then(res=>{
+                            this.rows = res.data
+                      }, error=>{
+                          error.status
+                      })
+                  }else if (this.type ==1 || this.type == 3){
+                      axios.get('/searchuser/'+name).then(res=>{
+                          this.rows = res.data
+                      }, error=>{
+                          error.status
+                      })
+                  }
+              },300),
           addToList(event, man){
               var e = event || window.event || arguments.callee.caller.arguments[0];
                   if(e && e.ctrlKey){ //如果同时按下了ctrl，本方法就停止
                         return
                    }
-              this.men.push(man)
+                   //props通病，必须判断是否存在，否则无法使用.push()
+              if (this.men){
+                  this.men.push(man)
+              }
+
               this.listFlag = false
                   if (this.type == 1){
                       Bus.$emit('addserviser', this.men)
@@ -149,7 +173,11 @@
 
           },
           addToListMul(man){
-                  this.men.push(man)
+                  //props通病，必须判断是否存在，否则无法使用.push()
+                  if (this.men){
+                      this.men.push(man)
+                  }
+
                   if (this.type == 1) {
                       Bus.$emit('addserviser', this.men)
                   } else if (this.type == 2) {
@@ -160,7 +188,9 @@
           },
           removeMan(man){
                   let index = this.men.indexOf(man)
-                  this.men.splice(index, 1)
+                  if (this.men){
+                      this.men.splice(index, 1)
+                  }
 
                   if (this.type == 1){
                       Bus.$emit('rmserviser', this.men)
