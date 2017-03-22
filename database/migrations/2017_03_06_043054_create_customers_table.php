@@ -18,6 +18,7 @@ class CreateCustomersTable extends Migration
             $table->string('name')->unique();
             $table->string('addr');
             $table->string('profession');  //所属行业
+            $table->integer('type')->default(0);  //0:已签客户 1:未签客户
             $table->string('thumbnail')->nullable(); //缩略图
             $table->timestamps();
         });

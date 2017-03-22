@@ -10,7 +10,8 @@
         "laravel/framework": "5.4.*",
         "laravel/tinker": "~1.0",
         "laravelcollective/html": "^5.4",
-        "phpoffice/phpword": "v0.13.*"
+        "phpoffice/phpword": "v0.13.*",
+        "zizaco/entrust": "dev-2.0-dev"
     },
     "require-dev": {
         "caouecs/laravel-lang": "~3.0",

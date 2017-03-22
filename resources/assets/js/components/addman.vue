@@ -114,13 +114,8 @@
                 manName:'',
                 listFlag:false,
                 rows:[
-                    {id:1, name:"测试者"},
-                    {id:1, name:"张小龙"},
-                    {id:1, name:"张小龙2"},
+
                 ],
-//                men:[
-//                    {id:1, name:"张小龙0"},
-//                ]
             }
         },
         props:{

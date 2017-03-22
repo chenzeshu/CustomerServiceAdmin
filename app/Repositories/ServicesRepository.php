@@ -8,7 +8,6 @@
 
 namespace App\Repositories;
 
-
 use App\Contract;
 use App\Customer2;
 use App\Service;
@@ -19,11 +18,13 @@ use PhpOffice\PhpWord\SimpleType\Jc;
 
 class ServicesRepository
 {
+
     public function newService($request)
     {
-        $info = Service::orderBy('s_id','desc')->limit(1)->pluck('s_id');
+        $info = Service::orderBy('id','desc')->limit(1)->pluck('s_id');
         $number = substr($info[0], 0, 8);
         $date = date('Ymd');
+
         if ($number == $date){
             //假如今天是同一天
             $s_id = $info[0]+1;
@@ -118,7 +119,7 @@ class ServicesRepository
     {
         $con = Contract::findOrFail($request->contract_id);
         $cus = Contract::findOrFail($request->contract_id)->customer()->first();
-        $cus2 = Customer2::findOrFail(($request->customer2)[0]['id'])->first();
+        $cus2 = Customer2::findOrFail($request->customer2[0]['id'])->first();
         ServiceTask::create([
             'id_service'=>$request->s_id2,
             'time1'=>$request->time1,
@@ -153,6 +154,15 @@ class ServicesRepository
         $cellHCentered = array('alignment' => Jc::CENTER);
 
         $section = $phpWord->addSection();
+
+        $section->addImage(public_path('/img/logo.png'),array(
+            'positioning' => 'relative',
+            'marginLeft' => "578.32",
+            'marginTop' => "1.23",
+            'width'         => 60,
+            'height'        => 60,
+            'wrappingStyle' => 'behind',
+        ));
         //标题
         $section->addTitle('南京中网卫星通信股份有限公司', 1);
         //表格

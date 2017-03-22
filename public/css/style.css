@@ -14,12 +14,37 @@
   width: 80%;
   margin: 0 auto;
 }
+#login1 {
+  position: absolute;
+  width: 20%;
+  height: 40%;
+  left: 120px;
+  top: 56px;
+  background: url(/images/logob.png?05e788cc5617dd6c9dbc95070617bbae);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
+#login2 {
+  position: absolute;
+  width: 20%;
+  height: 40%;
+  right: 120px;
+  top: 56px;
+  background: url(/images/logob.png?05e788cc5617dd6c9dbc95070617bbae);
+  background-repeat: no-repeat;
+  background-size: 100%;
+}
 li {
   list-style-type: none;
 }
 .single-floor {
   display: block;
   width: 100%;
+}
+.float-left {
+  display: block;
+  float: left;
+  margin-left: 15px;
 }
 .thumbnail {
   position: relative;

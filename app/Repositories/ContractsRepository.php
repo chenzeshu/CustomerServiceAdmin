@@ -8,7 +8,6 @@
 
 namespace App\Repositories;
 
-
 use App\Contract;
 use App\Customer;
 
@@ -30,17 +29,22 @@ class ContractsRepository
                 $contract_id = $date.'001';
             }
 
-
         $pm = serialize($request->pm);
         $tm = serialize($request->tm);
         Customer::findOrFail($id)->contracts()->create([
             'contract_id' => $contract_id,
             'type' => $request->type,
+            'contract_type'=>$request->contract_type,
             'name' => $request->name,
             'pm' => $pm,
             'tm' => $tm,
             'sum' => $request->sum,
-            'active' =>$request->active
+//            'active' =>$request->active,
+            'time1'=>strtotime($request->time1),
+            'time2'=>strtotime($request->time2),
+            'time3'=>strtotime($request->time3),
+            'main_unit'=>$request->main_unit,
+            'desc'=>$request->desc,
         ]);
     }
 
@@ -51,10 +55,17 @@ class ContractsRepository
         Contract::findOrFail($id)->update([
 //            'contract_id' => $request->contractId,
             'name' => $request->name,
+            'type' => $request->type,
+            'contract_type'=>$request->contract_type,
             'pm' => $pm,
             'tm' => $tm,
             'sum' => $request->sum,
-            'active' =>$request->active
+//            'active' =>$request->active,
+            'time1'=>strtotime($request->time1),
+            'time2'=>strtotime($request->time2),
+            'time3'=>strtotime($request->time3),
+            'main_unit'=>$request->main_unit,
+            'desc'=>$request->desc,
         ]);
     }
 

@@ -6,6 +6,7 @@ use App\Contract;
 use App\Customer;
 use App\Repositories\ContractsRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Input;
 
 class ContractsController extends Controller
 {
@@ -45,8 +46,8 @@ class ContractsController extends Controller
     public function store(Request $request)
     {
         $this->con->newContract($request);
-
     }
+
 
     /**
      * Display the specified resource.

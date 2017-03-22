@@ -9,6 +9,10 @@ use Illuminate\Http\Request;
 
 class Customer2sController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +20,7 @@ class Customer2sController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**

@@ -2,6 +2,8 @@
 
 @section('content')
 <div class="container">
+    <div id="login1"></div>
+    <div id="login2"></div>
     <div class="row">
         <div class="col-md-8 col-md-offset-2">
             <div class="panel panel-default">

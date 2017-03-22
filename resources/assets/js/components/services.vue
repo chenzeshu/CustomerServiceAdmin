@@ -7,33 +7,66 @@
             <thead class="self-font-weight-700 text-center">
                 <tr>
                     <td width="100">内部受理编号</td>
-                    <td width="150">信息来源</td>
+                    <td width="100" class="result-filter">信息来源<i class="fa fa-btn fa-caret-square-o-down touch" @click="sourceShow()"></i>
+                        <div class="result-animate" v-show="sourceFlag">
+                            <span class="touch" @click="sortSource(0)">4</span>
+                            <span class="touch" @click="sortSource(1)">工</span>
+                            <span class="touch" @click="sortSource(2)">销</span>
+                            <span class="touch" @click="sortSource(3)">营</span>
+                            <span class="touch" @click="sortSource(4)">全</span>
+                        </div>
+                    </td>
+                    <td width="100" class="result-filter">服务类型<i class="fa fa-btn fa-caret-square-o-down touch" @click="typeShow()"></i>
+                        <div class="result-animate" v-show="typeFlag">
+                            <span class="touch" @click="sortType(0)">故</span>
+                            <span class="touch" @click="sortType(1)">巡</span>
+                            <span class="touch" @click="sortType(2)">应</span>
+                            <span class="touch" @click="sortType(3)">远</span>
+                            <span class="touch" @click="sortType(4)">其</span>
+                            <span class="touch" @click="sortType(5)">全</span>
+                        </div>
+                    </td>
                     <td widtd="100">问题描述</td>
                     <td width="150">服务人员</td>
-                    <td width="100">收费情况</td>
-                    <td class="result-filter">用户评价<i class="fa fa-btn fa-caret-square-o-down touch" @click="sortRating(999)"></i>
-                        <transition name="show">
+                    <td width="100" class="result-filter">收费情况<i class="fa fa-btn fa-caret-square-o-down touch" @click="chargeShow()"></i>
+                        <div class="result-animate" v-show="chargeFlag">
+                            <span class="touch" @click="sortCharge(0)">免</span>
+                            <span class="touch" @click="sortCharge(1)">收</span>
+                            <span class="touch" @click="sortCharge(2)">全</span>
+                        </div>
+                    </td>
+                    <td width="100" class="result-filter">用户评价<i class="fa fa-btn fa-caret-square-o-down touch" @click="ratingShow()"></i>
+                        <!--<transition name="show">-->
                             <div class="result-animate" v-show="ratingFlag">
-                                <i class="fa fa-btn fa-refresh touch rcube1" @click="sortRating(0)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube1" @click="sortRating(1)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube0" @click="sortRating(2)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube2" @click="sortRating(3)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube3" @click="sortRating(4)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube4" @click="sortRating(5)"></i>
+                                <span class="touch" @click="sortRating(0)">非</span>
+                                <span class="touch" @click="sortRating(1)">满</span>
+                                <span class="touch" @click="sortRating(2)">一</span>
+                                <span class="touch" @click="sortRating(3)">不</span>
+                                <span class="touch" @click="sortRating(4)">未</span>
+                                <span class="touch" @click="sortRating(5)">全</span>
                             </div>
-                        </transition>
+                        <!--</transition>-->
                     </td>
-                    <td class="result-filter">处理状态<i class="fa fa-btn fa-caret-square-o-down touch" @click="sortStatus(999)"></i>
-                        <transition name="show">
+                    <td width="100" class="result-filter">处理状态<i class="fa fa-btn fa-caret-square-o-down touch" @click="resultShow()"></i>
+                        <!--<transition name="show">-->
                             <div class="result-animate" v-show="resultFlag">
-                                <i class="fa fa-btn fa-refresh touch rcube0" @click="sortStatus(0)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube1" @click="sortStatus(1)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube2" @click="sortStatus(2)"></i>
-                                <i class="fa fa-btn fa-refresh touch rcube3" @click="sortStatus(3)"></i>
+                                <span class="touch" @click="sortResult(0)">待</span>
+                                <span class="touch" @click="sortResult(1)">已</span>
+                                <span class="touch" @click="sortResult(2)">未</span>
+                                <span class="touch" @click="sortResult(3)">全</span>
                             </div>
-                        </transition>
+                        <!--</transition>-->
                     </td>
-                    <td width="100">回访情况</td>
+                    <td width="100" class="result-filter">回访情况<i class="fa fa-btn fa-caret-square-o-down touch" @click="callbackShow()"></i>
+                        <div class="result-animate" v-show="callbackFlag">
+                            <span class="touch" @click="sortCallback(0)">非</span>
+                            <span class="touch" @click="sortCallback(1)">满</span>
+                            <span class="touch" @click="sortCallback(2)">一</span>
+                            <span class="touch" @click="sortCallback(3)">不</span>
+                            <span class="touch" @click="sortCallback(4)">未</span>
+                            <span class="touch" @click="sortCallback(5)">全</span>
+                        </div>
+                    </td>
                     <td colspan="2">操作</td>
                 </tr>
             </thead>
@@ -46,6 +79,13 @@
                         <span v-else-if="service.source == 2">销售中心</span>
                         <span v-else="service.source == 3">营业中心</span>
                     </td>
+                    <td>
+                        <span v-if="service.type == 0">故障处理</span>
+                        <span v-else-if="service.type == 1">巡检</span>
+                        <span v-else-if="service.type == 2">应急保障</span>
+                        <span v-else-if="service.type == 3">远程协助</span>
+                        <span v-else="service.type == 4">其他</span>
+                    </td>
                     <td><div @click="descQuestion(service.desc1)"
                             class="btn btn-default btn-sm">问题描述</div></td>
                     <td>
@@ -54,7 +94,7 @@
                         </span>
                     </td>
                     <td>
-                        <span v-if="service.charge_if === 0">不收费</span>
+                        <span v-if="service.charge_if === 0">免费</span>
                         <span v-else>收费</span>
                     </td>
                     <!--客户评价-->
@@ -269,6 +309,20 @@
                                 </div>
                             </div>
                         </div>
+                        <!--占用工时-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工作量</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <input class="form-control" v-model.number="newService.time4">
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <span class="time4">天</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!--回访人员--组件传值>-->
                         <div class="form-group">
                             <label class="col-sm-3 control-label">回访人员</label>
@@ -276,6 +330,22 @@
                                 <div class="row">
                                     <div class="col-xs-10">
                                         <addman :type="3" :men="newService.visitor"></addman>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--回访评价radio-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回访评价</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10 form-inline">
+                                        <div class="radio" v-for="result_visit in basic.result_visits">
+                                            <label>
+                                                <input type="radio" name="result_visit" v-model="newService.result_visit" :value="result_visit.value">
+                                                {{ result_visit.text }}
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -291,20 +361,6 @@
                                                 :format="datepicker.format"
                                         :size="datepicker.size" :editable="datepicker.editable">
                                         </el-date-picker>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--占用工时-->
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">回访时间（单位0.5天）</label>
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <input class="form-control" placeholder="请填写整数" v-model.number="newService.time4">
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <span class="time4">× 0.5天</span>
                                     </div>
                                 </div>
                             </div>
@@ -500,6 +556,20 @@
                                 </div>
                             </div>
                         </div>
+                        <!--占用工时-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">工作量</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-4">
+                                        <input class="form-control" placeholder="请填写整数" v-model.number="editService.time4">
+                                    </div>
+                                    <div class="col-xs-4">
+                                        <span class="time4">天</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!--回访人员--组件传值>-->
                         <div class="form-group">
                             <label class="col-sm-3 control-label">回访人员</label>
@@ -507,6 +577,22 @@
                                 <div class="row">
                                     <div class="col-xs-10">
                                         <addman :type="3" :men="editService.visitor"></addman>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--回访评价radio-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">回访评价</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10 form-inline">
+                                        <div class="radio" v-for="result_visit in basic.result_visits">
+                                            <label>
+                                                <input type="radio" name="result_visit" v-model="editService.result_visit" :value="result_visit.value">
+                                                {{ result_visit.text }}
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -522,20 +608,6 @@
                                                 :format="datepicker.format"
                                                 :size="datepicker.size" :editable="datepicker.editable">
                                         </el-date-picker>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--占用工时-->
-                        <div class="form-group">
-                            <label class="col-sm-3 control-label">回访时间（单位0.5天）</label>
-                            <div class="col-sm-8">
-                                <div class="row">
-                                    <div class="col-xs-4">
-                                        <input class="form-control" placeholder="请填写整数" v-model.number="editService.time4">
-                                    </div>
-                                    <div class="col-xs-4">
-                                        <span class="time4">× 0.5天</span>
                                     </div>
                                 </div>
                             </div>
@@ -583,20 +655,13 @@
         opacity 0
     .result-animate
         position: absolute;
-        left: 68px;
+        left: 0;
         top: 25px;
         height: 20px;
-        width: 80px;
+        width: 110px;
         background: rgba(224,224,236,0.3);
         border-radius: 8%;
-        .rcube0
-            color #ffd601
-        .rcube1
-            color #2ab27b
-        .rcube2
-            color #f00
-        .rcube3
-            color #a2a2a2
+        z-index :100
 .modal-header
     padding: 5px 15px;
 
@@ -681,19 +746,28 @@
     import addman from './addman.vue'
     import bounce from './bounce.vue'
     import * as base from '../utils/base'
+    let token = document.querySelector('meta[name=csrf-token]').getAttribute('content')
     var cc = console.log;
     export default {
         data(){
             return {
-                ratingFlag:false,
-                rating_sort: 0,  //0：非常满意，1：满意，2：一般，3：不满意，4：未评价, 5:全部
-                resultFlag:false,
-                result_sort: 3,  //0:待， 1：已， 2：未， 3：全部
                 newFlag:false,
                 editFlag:false,
+                typeFlag:false,
+                sourceFlag:false,
+                chargeFlag:false,
+                ratingFlag:false,
+                resultFlag:false,
+                callbackFlag:false,
+                sort_type:5,  //0:故障，1：巡检，2：应急，3：远程，4：其他，5：全部
+                sort_source:4,  //0:400，1：工程，2：销售，3：营运，4：全部
+                sort_charge: 2,  //0:免费， 1：收费， 2：全部
+                sort_rating: 5,  //0：非常满意，1：满意，2：一般，3：不满意，4：未评价, 5:全部
+                sort_result: 3,  //0:待， 1：已， 2：未， 3：全部
+                sort_callback: 5,  //0：非常满意，1：满意，2：一般，3：不满意，4：未回访, 5:全部
                 currentPage:1,
-                pageSize:2,
-                pageSizes:[1, 2, 3],
+                pageSize:10,
+                pageSizes:[10, 20, 30],
                 datepicker:{
                   size:"small",
                   editable:false,
@@ -710,9 +784,9 @@
                     typesSelected:0,
                     types:[
                         {text:"故障处理", value:0},
-                        {text:"应急保障", value:1},
-                        {text:"远程协助", value:2},
-                        {text:"巡检", value:3},
+                        {text:"巡检", value:1},
+                        {text:"应急保障", value:2},
+                        {text:"远程协助", value:3},
                         {text:"其他", value:4},
                     ],
                     charge_if:[
@@ -731,8 +805,16 @@
                         {text:"不满意", value :3},
                         {text:"尚未评价", value :4},
                     ],
+                    result_visits:[
+                        {text:"非常满意", value :0},
+                        {text:"满意", value :1},
+                        {text:"一般", value :2},
+                        {text:"不满意", value :3},
+                        {text:"尚未评价", value :4},
+                    ],
                     desc1:null,
                 },
+                //数据对象
                 newService:{
                     source:0,  //默认400电话
                     type:0,    //默认故障处理
@@ -753,6 +835,7 @@
                     visitor:[
 //                        {}  //用于测试
                     ],
+                    result_visit:4,
                     time2:null,
                     result_visit:4, //默认未回访
                     time3:null,  //默认3*0.5 = 1.5天
@@ -760,7 +843,7 @@
                         {name:"任务单纸质文件", file_name:null }
                     ]
                 },
-                editService:{}
+                editService:{},
             }
         },
         props:{
@@ -772,6 +855,7 @@
           }
         },
         computed:{
+            //页码总数
             total(){
                 if (this.services){
                     let _services = this.services
@@ -793,23 +877,135 @@
                 let start = (this.currentPage -1 ) * this.pageSize
                 let end = start + this.pageSize
 
-               var ra = this.rating_sort
-               var re = this.result_sort
+               var type = this.sort_type  //5
+               var source = this.sort_source  //4
+               var charge = this.sort_charge //2
+               var rating = this.sort_rating //5
+               var result = this.sort_result //3
+               var callback = this.sort_callback  //5
                 if (this.services){
-                   let _services = this.services
-                   return _services.filter(service=>{
-                       if(ra !=5 && re==3){
-                           return service.rating == ra
-                       }else if(ra ==5 && re!=3){
-                           return service.result_deal == re
-                       }else if(ra ==5 && re ==3){
-                           return true
-                       }
-                    }).slice(start, end)
+                   var _services =  this.services
+
+                    //服务类型
+                    if (type !=5){
+                       _services = _services.filter(service=>{
+                           return service.type == type
+                       })
+                    }else{
+                        //信息来源
+                        if (source != 4){
+                            _services = _services.filter(service=>{
+                                return service.source == source
+                            })
+                        }else{
+//                            收费
+                            if(charge != 2){
+                                _services = _services.filter(service=>{
+                                    return service.charge_if == charge
+                                })
+                            }else{
+//                                服务评价
+                                if(rating !=5 ){
+                                    _services = _services.filter(service=>{
+                                        return service.rating == rating
+                                    })
+                                }else{
+//                                    处理结果
+                                    if(result !=3){
+                                        _services = _services.filter(service=>{
+                                            return service.result_deal == result
+                                        })
+                                    }else{
+                                        //回访情况
+                                        if(callback != 5){
+                                            _services = _services.filter(service=>{
+                                                return service.result_visit == callback
+                                            })
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+//                    _services = _services.filter(service=>{
+//                       if(ra !=5 && re==3){
+//                           return service.rating == ra
+//                       }else if(ra ==5 && re!=3){
+//                           return service.result_deal == re
+//                       }else if(ra ==5 && re ==3){
+//                           return true
+//                       }
+//                    })
                 }
+
+                return _services.slice(start, end)
             }
         },
         methods:{
+            resetFlag(){
+                this.typeFlag=false
+                this.sourceFlag=false
+                this.chargeFlag=false
+                this.ratingFlag=false
+                this.resultFlag=false
+                this.callbackFlag=false
+            },
+            resetSort(){
+                this.sort_type = 5
+                this.sort_source = 4
+                this.sort_charge = 2
+                this.sort_rating = 5
+                this.sort_result = 3
+                this.sort_callback = 5
+            },
+            typeShow(){
+                this.typeFlag = !this.typeFlag
+            },
+            sourceShow(){
+                this.sourceFlag = !this.sourceFlag
+            },
+            chargeShow(){
+                this.chargeFlag = !this.chargeFlag
+            },
+            ratingShow(){
+                this.ratingFlag = !this.ratingFlag
+            },
+            resultShow(){
+                this.resultFlag = !this.resultFlag
+            },
+            callbackShow(){
+                this.callbackFlag = !this.callbackFlag
+            },
+            sortType(num){
+                this.resetSort()
+                this.sort_type = num
+                this.resetFlag()
+            },
+            sortSource(num){
+                this.resetSort()
+                this.sort_source = num
+                this.resetFlag()
+            },
+            sortCharge(num){
+                this.resetSort()
+                this.sort_charge = num
+                this.resetFlag()
+            },
+            sortRating(num){
+                this.resetSort()
+                this.sort_rating = num
+                this.resetFlag()
+            },
+            sortResult(num){
+                this.resetSort()
+                this.sort_result = num
+                this.resetFlag()
+            },
+            sortCallback(num){
+                this.resetSort()
+                this.sort_callback = num
+                this.resetFlag()
+            },
             test(){
             },
             descQuestion(desc){
@@ -937,20 +1133,6 @@
                 }, error=>{
                     error.status
                 })
-            },
-            sortRating(number){
-                this.ratingFlag = !this.ratingFlag
-                if (number != 999){
-                    this.rating_sort = number
-                    this.result_sort = 3  //将其他重置为默认状态
-                }
-            },
-            sortStatus(number){
-                this.resultFlag = !this.resultFlag
-                if (number != 999){
-                    this.result_sort = number
-                    this.rating_sort = 5  //将其他重置为默认状态
-                }
             },
         },
         mounted() {

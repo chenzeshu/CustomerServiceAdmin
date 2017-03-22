@@ -25,6 +25,11 @@
                     {!! Form::label('profession','客户行业：',['class'=>'control-label']) !!}
                     {!! Form::text('profession',null,['class'=>'form-control']) !!}
                 </div>
+                <div class="form-group">
+                    {!! Form::label('type','是否签约：',['class'=>'control-label']) !!}
+                    {!! Form::radio('type',0) !!}正式用户
+                    {!! Form::radio('type',1) !!}非正式用户
+                </div>
                 <p>目前上线工期紧张，未使用AJAX技术，提交失败原因请再次打开本页面查看</p>
                 @include('errors.errors')
             </div>

@@ -7,8 +7,8 @@
 
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <link rel="shortcut icon" href="{{ asset('img/logo-icon.png') }}">
+    <title>云卫通客服</title>
 
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
@@ -22,6 +22,7 @@
             'csrfToken' => csrf_token(),
         ]) !!};
     </script>
+
 </head>
 <body>
     <div id="app">
@@ -39,17 +40,18 @@
 
                     <!-- Branding Image -->
                     <a class="navbar-brand" href="{{ url('/') }}">
-                        云卫通大数据平台
+                        <span><img src="{{ asset('img/logo.png') }}" alt="" width="30" height="20"></span>云卫通平台/客服
                     </a>
                 </div>
 
                 <div class="collapse navbar-collapse" id="app-navbar-collapse">
                     <!-- Left Side Of Navbar -->
                     <ul class="nav navbar-nav margin-top-right-10">
-                        &nbsp;v0.1
+                        &nbsp;v0.15
                     </ul>
                     <ul class="nav navbar-nav">
                         <li>{{ link_to_route('customers.index', '客户信息库') }}</li>
+                        <li>{{ link_to_route('customer2sblade.index', '联系人信息库') }}</li>
                         <li>{{ link_to_route('users.index', '员工信息库') }}</li>
                     </ul>
 

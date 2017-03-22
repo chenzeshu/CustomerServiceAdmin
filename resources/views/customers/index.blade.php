@@ -4,6 +4,13 @@
 
 <div class="container">
     <h3>客户信息库</h3>
+    <a href="{{asset('type/0')}}" class="float-left">正式用户</a>
+    <a href="{{asset('type/1')}}" class="float-left">非正式用户</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <form action="{{asset('searchcusname')}}" method="POST" class="float-left">
+        {{csrf_field()}}
+        <input type="text" name="searchcusname">
+        <button class="btn btn-default btn-sm">搜索客户</button>
+    </form>
     <hr>
     <div class="row">
         @if($customers)
@@ -44,7 +51,6 @@
                     {{ $customers->links() }}
                 </div>
             </div>
-
     </div>
 </div>
 @endsection

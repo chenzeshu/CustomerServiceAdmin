@@ -18,6 +18,7 @@ class CustomerRepository
             'name' => $request->name,
             'addr' => $request->addr,
             'profession' => $request->profession,
+            'type'=>$request->type,
         ]);
     }
 
@@ -27,6 +28,7 @@ class CustomerRepository
             'name' => $request->name,
             'addr' => $request->addr,
             'profession' => $request->profession,
+            'type'=>$request->type,
 //           'thumbnail' => 'flower.jpg',
         ]);
     }
