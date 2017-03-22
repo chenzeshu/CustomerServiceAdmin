@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "./";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 138);
+/******/ 	return __webpack_require__(__webpack_require__.s = 139);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -23690,12 +23690,12 @@ return jQuery;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseUrl; });
 /* unused harmony export baseUrlCon */
-var baseUrl = "http://222.222.228.9:8888/services/";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return baseUrl; });
+// export const baseUrl = "http://222.222.228.9:8888/services/"
 var baseUrlCon = "http://222.222.228.9:8888/strange/";
 
-// export const baseUrl = "http://lv.app/services/"
+var baseUrl = "http://lv.app/services/";
 // export const baseUrlCon = "http://lv.app/strange/"
 
 /***/ }),
@@ -81395,7 +81395,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addman_vue__ = __webpack_require__(34);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__addman_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__addman_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__utils_base__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_date__ = __webpack_require__(147);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_date__ = __webpack_require__(138);
 //
 //
 //
@@ -83988,23 +83988,6 @@ window.axios.defaults.headers.common = {
 
 /***/ }),
 /* 138 */
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(40);
-__webpack_require__(38);
-module.exports = __webpack_require__(39);
-
-
-/***/ }),
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */,
-/* 144 */,
-/* 145 */,
-/* 146 */,
-/* 147 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84048,6 +84031,15 @@ function formatDate(date, fmt) {
 function padLeftZero(str) {
     return ('00' + str).substr(str.length); //技巧：首位补0
 }
+
+/***/ }),
+/* 139 */
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(40);
+__webpack_require__(38);
+module.exports = __webpack_require__(39);
+
 
 /***/ })
 /******/ ]);

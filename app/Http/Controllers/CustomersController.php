@@ -129,9 +129,10 @@ class CustomersController extends Controller
         return $companies;
     }
 
-    public function test(Request $request)
+    public function test()
     {
-
+        $time2 = Contract::findOrFail(14)->time2;
+        dd($time2);
 
     }
 }

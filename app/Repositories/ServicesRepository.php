@@ -117,23 +117,23 @@ class ServicesRepository
 
     public function createServiceTask($request)
     {
-        $con = Contract::findOrFail($request->contract_id);
+        $time2 = Contract::findOrFail($request->contract_id)->time2;
         $cus = Contract::findOrFail($request->contract_id)->customer()->first();
         $cus2 = Customer2::findOrFail($request->customer2[0]['id'])->first();
         ServiceTask::create([
             'id_service'=>$request->s_id2,
             'time1'=>$request->time1,
+            'time2'=>$request->time2,
+            'time3'=>$request->time4,
             'sendman'=>Auth::user()->name,
             'cus_name'=>$cus->name,
             'cus_addr'=>$cus->addr,
             'cus2_name'=>$cus2->name,
             'cus2_phone'=>$cus2->phone,
-            'status'=>toStatus($con->type),
-            'type'=>toType($request->type),
+            'status'=>toStatus($time2),  //将质保截止日期转换为质保状态
+            'type'=>toType($request->type),  //将服务类型字转换为汉字
             'desc'=>$request->desc1,
             'servisor'=> serialize($request->serviser),
-            'time2'=>$request->time2,
-            'time3'=>$request->time4
             ]);
     }
 
