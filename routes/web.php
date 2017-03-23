@@ -44,7 +44,6 @@ Route::get('services/printTask', 'ServicesController@printTask');
 Route::get('customers/{cus_id}/services','CustomersController@showServices');
 
 
-Route::resource('users', 'UsersController');
 Route::resource('customers', 'CustomersController');
 Route::resource('customer2s', 'Customer2sController');
 Route::resource('customer2sblade', 'Customer2sBladeController');
@@ -52,4 +51,9 @@ Route::resource('contracts', 'ContractsController');
 Route::resource('services', 'ServicesController');
 Route::resource('duties', 'DutiesController');
 
+Route::group(['prefix' => 'admin', 'middleware'=>'auth'], function (){
+    Route::resource('roles', 'RolesController');
+    Route::resource('permissions', 'PermissionsController');
+    Route::resource('users', 'UsersController');
+});
 

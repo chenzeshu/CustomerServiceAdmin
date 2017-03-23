@@ -53,6 +53,16 @@
                         <li>{{ link_to_route('customers.index', '客户信息库') }}</li>
                         <li>{{ link_to_route('customer2sblade.index', '联系人信息库') }}</li>
                         <li>{{ link_to_route('users.index', '员工信息库') }}</li>
+                        @role('admin')
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown"
+                               role="button" aria-haspopup="true" aria-expanded="false">权限管理 <span class="caret"></span></a>
+                            <ul class="dropdown-menu">
+                                <li>{{ link_to_route('roles.index', '所有角色') }}</li>
+                                <li>{{ link_to_route('permissions.index', '用户概览') }}</li>
+                            </ul>
+                        @endrole
+                        </li>
                     </ul>
 
                     <!-- Right Side Of Navbar -->

@@ -35,7 +35,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
-
+        //限制访问频率为60次/分钟
         'api' => [
             'throttle:60,1',
             'bindings',
@@ -59,5 +59,6 @@ class Kernel extends HttpKernel
         'role' => \Zizaco\Entrust\Middleware\EntrustRole::class,
         'permission' => \Zizaco\Entrust\Middleware\EntrustPermission::class,
         'ability' => \Zizaco\Entrust\Middleware\EntrustAbility::class,
+        'protectAdminRole' => \App\Http\Middleware\ProtectAdminRole::class,
     ];
 }

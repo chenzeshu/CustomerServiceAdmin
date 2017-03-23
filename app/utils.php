@@ -40,3 +40,13 @@ function toType($type){
             break;
     }
 }
+
+/**
+ * @destination 判断角色是否含有权限
+ * @param $perm 权限
+ * @param $role 角色
+ * @return true or false
+ */
+function permCheck($perm, $role){
+    return $role->hasPermission($perm->name)? true:false;
+}
