@@ -71,7 +71,9 @@ class UsersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        $collection = collect($request->id);
+        $user->roles()->sync($collection);
     }
 
     /**
@@ -82,7 +84,11 @@ class UsersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+        //解除权限操作
+        $user->roles()->detach();
+        //todo 正式删除用户
+        //...
     }
 
     public function showList($name)

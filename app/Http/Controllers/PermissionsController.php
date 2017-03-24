@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Permission;
 use App\Repositories\PermissionsRepositories;
+use App\Role;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
@@ -24,8 +25,8 @@ class PermissionsController extends Controller
     public function index()
     {
         $users = User::with('roles.perms')->get();
-
-        return view('auth.perms.index',compact('users'));
+        $roles = Role::get();
+        return view('auth.perms.index',compact('users','roles'));
     }
 
     /**
@@ -82,7 +83,7 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**
@@ -93,6 +94,6 @@ class PermissionsController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }

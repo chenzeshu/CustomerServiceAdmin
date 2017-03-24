@@ -11,7 +11,7 @@
                     <div class="checkbox">
                         @foreach($perms as $perm)
                             <label for="">
-                                {!! Form::checkbox('$perm[]', $perm->id, false) !!}
+                                {!! Form::checkbox('perm[]', $perm->id, false) !!}
                                 {{ $perm->display_name or $perm->name }}
                             </label>
                         @endforeach

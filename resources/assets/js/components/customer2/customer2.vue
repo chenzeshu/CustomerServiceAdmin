@@ -138,7 +138,7 @@
     </div>
 </template>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style type="text/stylus" rel="stylesheet/stylus" lang="stylus">
     .customer2
         position relative
         .newService

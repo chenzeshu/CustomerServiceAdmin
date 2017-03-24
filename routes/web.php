@@ -12,7 +12,8 @@
 */
 
 Route::get('/', 'CustomersController@index');
-Route::get('/home', 'HomeController@index');
+//Route::get('/home', 'HomeController@index');
+Route::get('/home', 'CustomersController@index');
 Auth::routes();
 
 //测试

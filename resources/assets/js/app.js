@@ -10,6 +10,7 @@ Vue.use(ElementUI)
 Vue.component('v-contracts', require('./components/contracts.vue'));
 Vue.component('v-services', require('./components/services.vue'));
 Vue.component('v-customer2', require('./components/customer2/customer2.vue'));
+Vue.component('v-userrole', require('./components/auth/userrole.vue'));
 
 const app = new Vue({
     el: '#app',
