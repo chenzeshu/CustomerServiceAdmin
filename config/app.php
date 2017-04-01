@@ -59,6 +59,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
         Zizaco\Entrust\EntrustServiceProvider::class,
+        Barryvdh\Cors\ServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -122,5 +123,4 @@ return [
         'Entrust'   => Zizaco\Entrust\EntrustFacade::class,
 
     ],
-
 ];

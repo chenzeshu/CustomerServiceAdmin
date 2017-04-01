@@ -57,7 +57,7 @@ class ContractsController extends Controller
      */
     public function show($id)
     {
-        $services = Contract::findOrFail($id)->services()->get();
+        $services = Contract::findOrFail($id)->services()->orderBy('id', 'desc')->get();
         foreach ($services as $service){
             $service->serviser = unserialize($service->serviser);
             $service->customer2 = unserialize($service->customer2);

@@ -8,6 +8,7 @@
 
 namespace App\Repositories;
 
+use App\Contract;
 use App\Customer;
 
 class CustomerRepository
@@ -32,4 +33,15 @@ class CustomerRepository
 //           'thumbnail' => 'flower.jpg',
         ]);
     }
+
+    public function showContracts($id)
+    {
+        $contracts = Customer::findOrFail($id)->contracts()->orderBy('id','desc')->get();
+        foreach ($contracts as $contract){
+            $contract->pm = unserialize($contract->pm);
+            $contract->tm = unserialize( $contract->tm);
+        }
+        return $contracts;
+    }
+
 }

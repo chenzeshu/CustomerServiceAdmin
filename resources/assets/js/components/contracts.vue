@@ -101,6 +101,39 @@
                 <br>
                 <form  @submit.prevent="addContract()"
                        class="form-horizontal width-80per-margin-auto">
+                    <!--编号类型radio-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">编号类型</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-xs-10 form-inline">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="type" value="0" v-model="contract_id_check">
+                                            自动生成
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="type" value="1" v-model="contract_id_check">
+                                            手动输入
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--合同编号-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">合同编号</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <input type="text" class="form-control" v-model="newContract.contract_id">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!--合同名称-->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">合同名称</label>
@@ -287,6 +320,39 @@
                 <br>
                 <form  @submit.prevent="updateContract(contract1)"
                         class="form-horizontal width-80per-margin-auto">
+                    <!--编号类型radio-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">编号类型</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-xs-10 form-inline">
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="type" value="0" v-model="contract_id_check">
+                                            自动生成
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="type" value="1" v-model="contract_id_check">
+                                            手动输入
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--合同编号-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">合同编号</label>
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <input type="text" class="form-control" v-model.lazy="contract1.contract_id">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <!--合同名称-->
                     <div class="form-group">
                         <label class="col-sm-3 control-label">合同名称</label>
@@ -532,6 +598,7 @@
     export default {
         data(){
             return {
+                contract_id_check : 0,
                 editFlag: false,
                 newFlag: false,
                 newContract:{
@@ -733,8 +800,10 @@
             },
             addContract(){
                 let token = document.querySelector('meta[name=csrf-token]').getAttribute('content')
+                this.newContract.contract_id = this.contract_id_check ? this.newContract.contract_id : null
                 let info = {
                     parentId: this.parentId,
+                    contract_id:this.newContract.contract_id,
                     type:this.newContract.type,
                     name : this.newContract.name,
                     pm :this.newContract.pm,
@@ -748,9 +817,7 @@
                     contract_type:this.newContract.contract_type
 //                    _token:token
                 }
-//                $.post('/contracts', info, function (data) {
-//                    cc(data)
-//                })
+
                 axios.post('/contracts', info).then((res)=>{
                     //todo 如果时间充足，就在外层做一个总的组件，然后用vuex解决数据更新问题
                     layer.msg("新建成功", {icon: 6});
@@ -767,7 +834,10 @@
                 })
             },
             updateContract(contract1){
-              let data = {
+                contract1.contract_id = this.contract_id_check ? contract1.contract_id:null
+
+                let data = {
+                 contract_id:contract1.contract_id,
                   name : contract1.name,
                   pm : contract1.pm,
                   tm : contract1.tm,

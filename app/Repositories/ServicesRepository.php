@@ -21,19 +21,25 @@ class ServicesRepository
 
     public function newService($request)
     {
-        $info = Service::orderBy('id','desc')->limit(1)->pluck('s_id');
-        $number = substr($info[0], 0, 8);
-        $date = date('Ymd');
+        switch ($request->s_id){
+            case null: //自动
+                $info = Service::orderBy('id','desc')->limit(1)->pluck('s_id');
+                $number = substr($info[0], 0, 8);
+                $date = date('Ymd');
 
-        if ($number == $date){
-            //假如今天是同一天
-            $s_id = $info[0]+1;
-            $s_id2 = $this->typeToId($s_id, $request->type);
-        }else{
-            //假如今天是新的一天
-            $s_id = $date.'001';
-            $s_id2 = $this->typeToId($s_id, $request->type);
-        }
+                if ($number == $date){
+                    //假如今天是同一天
+                $s_id = $info[0]+1;
+                }else {
+                    //假如今天是新的一天
+                    $s_id = $date . '001';
+                }
+                break;
+            default: //手工
+                $s_id = $request->s_id;
+                break;
+         }
+        $s_id2 = $this->typeToId($s_id, $request->type);
         $serviser = $request->serviser;
         $customer2 = $request->customer2;
         $visitor = $request->visitor;

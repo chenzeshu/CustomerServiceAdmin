@@ -40,7 +40,7 @@
     </div>
 </template>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" type="text/stylus">
     .addcompany
         position relative
         display flex

@@ -16,6 +16,7 @@ class ContractsRepository
     public function newContract($request)
     {
         $id = $request->parentId;
+//        $id = $request->customer_id;  //等contract专门做了客户单位维护再改
         //拿到正确编号
         $date = date('Ymd');
         //必须判断表里是否至少一条数据，因为新建表会没有数据----》当然，为了一点点性能考虑，为什么不手动建一条数据呢？
@@ -32,14 +33,14 @@ class ContractsRepository
         $pm = serialize($request->pm);
         $tm = serialize($request->tm);
         Customer::findOrFail($id)->contracts()->create([
-            'contract_id' => $contract_id,
+            'customer_name'=>$request->cus['payload']['name']  ? $request->cus['payload']['name']  : null,  //todo 三元表达式主要为了照顾第一版，转向第二版后可以删去
+            'contract_id' => $request->contract_id ? $request->contract_id : $contract_id,
             'type' => $request->type,
             'contract_type'=>$request->contract_type,
             'name' => $request->name,
             'pm' => $pm,
             'tm' => $tm,
             'sum' => $request->sum,
-//            'active' =>$request->active,
             'time1'=>strtotime($request->time1),
             'time2'=>strtotime($request->time2),
             'time3'=>strtotime($request->time3),
@@ -52,22 +53,50 @@ class ContractsRepository
     {
         $pm = serialize($request->pm);
         $tm = serialize($request->tm);
-        Contract::findOrFail($id)->update([
-//            'contract_id' => $request->contractId,
-            'name' => $request->name,
-            'type' => $request->type,
-            'contract_type'=>$request->contract_type,
-            'pm' => $pm,
-            'tm' => $tm,
-            'sum' => $request->sum,
-//            'active' =>$request->active,
-            'time1'=>strtotime($request->time1),
-            'time2'=>strtotime($request->time2),
-            'time3'=>strtotime($request->time3),
-            'main_unit'=>$request->main_unit,
-            'desc'=>$request->desc,
-        ]);
+        if($request->contract_id){
+            Contract::findOrFail($id)->update([
+                'customer_id'=>$request->customer_id ? $request->customer_id : null,  //todo 三元表达式主要为了照顾第一版，转向第二版后可以删去
+                'customer_name'=>$request->customer_name ? $request->customer_name  : null,  //todo 三元表达式主要为了照顾第一版，转向第二版后可以删去
+                'contract_id' => $request->contract_id,
+                'name' => $request->name,
+                'type' => $request->type,
+                'contract_type'=>$request->contract_type,
+                'pm' => $pm,
+                'tm' => $tm,
+                'sum' => $request->sum,
+                'time1'=>strtotime($request->time1),
+                'time2'=>strtotime($request->time2),
+                'time3'=>strtotime($request->time3),
+                'main_unit'=>$request->main_unit,
+                'desc'=>$request->desc,
+            ]);
+        }else{
+            Contract::findOrFail($id)->update([
+                'customer_id'=>$request->customer_id ? $request->customer_id : null,  //todo 三元表达式主要为了照顾第一版，转向第二版后可以删去
+                'customer_name'=>$request->customer_name ? $request->customer_name  : null,  //todo 三元表达式主要为了照顾第一版，转向第二版后可以删去
+                'name' => $request->name,
+                'type' => $request->type,
+                'contract_type'=>$request->contract_type,
+                'pm' => $pm,
+                'tm' => $tm,
+                'sum' => $request->sum,
+                'time1'=>strtotime($request->time1),
+                'time2'=>strtotime($request->time2),
+                'time3'=>strtotime($request->time3),
+                'main_unit'=>$request->main_unit,
+                'desc'=>$request->desc,
+            ]);
+        }
+
     }
 
-
+    public function showAllContracts()
+    {
+        $contracts = Contract::orderBy('id','desc')->get();
+        foreach ($contracts as $contract){
+            $contract->pm = unserialize($contract->pm);
+            $contract->tm = unserialize( $contract->tm);
+        }
+        return $contracts;
+    }
 }

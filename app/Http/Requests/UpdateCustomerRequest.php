@@ -24,7 +24,7 @@ class UpdateCustomerRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required | unique:customers',
             'addr' => 'required',
             'profession' => 'required'
         ];
@@ -34,6 +34,7 @@ class UpdateCustomerRequest extends FormRequest
     {
         return [
             'addr.required' =>'用户地址不能为空',
+            'name.unique' => '用户已经存在',
             'profession.required' =>'用户所在行业不能为空'
         ];
     }

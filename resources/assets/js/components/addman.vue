@@ -36,7 +36,7 @@
     </div>
 </template>
 
-<style lang="stylus" rel="stylesheet/stylus">
+<style lang="stylus" rel="stylesheet/stylus" type="text/stylus">
     .addman
         position relative
         display flex
@@ -113,9 +113,7 @@
             return {
                 manName:'',
                 listFlag:false,
-                rows:[
-
-                ],
+                rows:[],
             }
         },
         props:{

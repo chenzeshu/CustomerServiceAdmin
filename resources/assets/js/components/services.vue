@@ -150,6 +150,39 @@
 
                 <form class="form-horizontal width-100per-margin-auto">
                     <div class="info-container">
+                        <!--编号类型radio-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">编号类型</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10 form-inline">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="service_id_check" value="0" v-model="service_id_check">
+                                                自动生成
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="service_id_check" value="1" v-model="service_id_check">
+                                                手动输入
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--服务编号-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">服务编号</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <input type="text" class="form-control" v-model="newService.s_id">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!--信息来源-->
                         <div class="form-group">
                             <label class="col-sm-3 control-label">信息来源</label>
@@ -390,12 +423,45 @@
             <div class="new-wrapper" v-show="editFlag">
                 <div class="modal-header">
                     <button type="button" class="close" @click="toggleEdit"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title">新建服务</h4>
+                    <h4 class="modal-title">修改服务</h4>
                 </div>
                 <br>
 
                 <form class="form-horizontal width-100per-margin-auto">
                     <div class="info-container">
+                        <!--编号类型radio-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">编号类型</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-10 form-inline">
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="service_id_check" value="0" v-model="service_id_check">
+                                                自动生成
+                                            </label>
+                                        </div>
+                                        <div class="radio">
+                                            <label>
+                                                <input type="radio" name="service_id_check" value="1" v-model="service_id_check">
+                                                手动输入
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--服务编号-->
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">服务编号</label>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="col-xs-12">
+                                        <input type="text" class="form-control" v-model="editService.s_id">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!--信息来源-->
                         <div class="form-group">
                             <label class="col-sm-3 control-label">信息来源</label>
@@ -759,6 +825,7 @@
                 ratingFlag:false,
                 resultFlag:false,
                 callbackFlag:false,
+                service_id_check:0,  //0:自动， 1：手工
                 sort_type:5,  //0:故障，1：巡检，2：应急，3：远程，4：其他，5：全部
                 sort_source:4,  //0:400，1：工程，2：销售，3：营运，4：全部
                 sort_charge: 2,  //0:免费， 1：收费， 2：全部
@@ -927,15 +994,6 @@
                             }
                         }
                     }
-//                    _services = _services.filter(service=>{
-//                       if(ra !=5 && re==3){
-//                           return service.rating == ra
-//                       }else if(ra ==5 && re!=3){
-//                           return service.result_deal == re
-//                       }else if(ra ==5 && re ==3){
-//                           return true
-//                       }
-//                    })
                 }
 
                 return _services.slice(start, end)
@@ -1059,6 +1117,8 @@
                 this.editService = Object.assign({}, service )
             },
             addService(service){
+                service.s_id = this.service_id_check===0 ?  null : service.s_id
+                cc(service.s_id)
                 axios.post('/services', service).then((res)=>{
                     layer.msg("新增成功", {icon: 6});
                     setTimeout(function(){
@@ -1066,13 +1126,15 @@
                     },900)
                     this.newFlag = false
                 },error=>{
-                    layer.msg("新增失败，请检查", {icon: 5});
+                    layer.msg("新增失败，请检查", {icon: 5})
                     setTimeout(function(){
-                        location.href = location.href;
+                        location.href = location.href
                     },900)
                 })
             },
             updateService(service){
+                service.s_id = this.service_id_check ? service.s_id : null
+
                 var id = service.id
                 axios.patch('/services/'+id, service).then((res)=>{
                     layer.msg("更新成功", {icon: 6});

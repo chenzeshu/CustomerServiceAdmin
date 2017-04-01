@@ -1,22 +1,20 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
 use App\Contract;
-use App\Customer;
-use App\Customer2;
-use App\Repositories\Customer2sRepository;
+use App\Repositories\ContractsRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class Customer2sController extends Controller
+class contractsController extends Controller
 {
     protected $repo;
-
-    public function __construct(Customer2sRepository $repo)
+    function __construct(ContractsRepository $repo)
     {
-        $this->middleware('auth');
         $this->repo = $repo;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +22,8 @@ class Customer2sController extends Controller
      */
     public function index()
     {
-
+        $contracts = $this->repo->showAllContracts();
+        return $contracts;
     }
 
     /**
@@ -45,7 +44,7 @@ class Customer2sController extends Controller
      */
     public function store(Request $request)
     {
-        $this->repo->newCus2($request);
+        $this->repo->newContract($request);
     }
 
     /**
@@ -67,7 +66,7 @@ class Customer2sController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -79,7 +78,7 @@ class Customer2sController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->repo->updateCus2($request, $id);
+        $this->repo->updateContract($request, $id);
     }
 
     /**
@@ -90,14 +89,12 @@ class Customer2sController extends Controller
      */
     public function destroy($id)
     {
-        Customer2::findOrFail($id)->delete();
+        Contract::findOrFail($id)->delete();
     }
 
-    public function showList($contract_id,$name)
+    public function search($name)
     {
-
-        $cus2 = $this->repo->search($contract_id, $name);
-
-        return $cus2;
+        $contracts = Contract::where('name', 'like', '%'.$name.'%')->get();
+        return $contracts;
     }
 }

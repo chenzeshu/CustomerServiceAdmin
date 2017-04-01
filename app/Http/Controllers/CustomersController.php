@@ -23,6 +23,7 @@ class CustomersController extends Controller
     public function __construct(CustomerRepository $cus)
     {
         $this->middleware('auth');
+
         $this->cus = $cus;
     }
     /**
@@ -32,7 +33,7 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        $customers = Customer::paginate(8);
+        $customers = Customer::orderBy('id', 'desc')->paginate(8);
         return view('customers.index', compact('customers'));
     }
 
@@ -77,12 +78,9 @@ class CustomersController extends Controller
      */
     public function show($id)
     {
-        $contracts = Customer::findOrFail($id)->contracts()->get();
-        foreach ($contracts as $contract){
-            $contract->pm = unserialize($contract->pm);
-            $contract->tm = unserialize( $contract->tm);
-        }
-        $cus2s = Customer::findOrFail($id)->customer2s()->get();
+        //获得反序列化的合同信息
+        $contracts = $this->cus->showContracts($id);
+        $cus2s = Customer::findOrFail($id)->customer2s()->orderBy('id','desc')->get();
         return view('customers.show', compact('contracts','id','cus2s'));
     }
 
@@ -133,6 +131,5 @@ class CustomersController extends Controller
     {
         $time2 = Contract::findOrFail(14)->time2;
         dd($time2);
-
     }
 }

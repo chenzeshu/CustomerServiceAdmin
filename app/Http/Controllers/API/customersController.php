@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Contract;
 use App\Customer;
-use App\Customer2;
-use App\Repositories\Customer2sRepository;
+use App\Repositories\CustomerRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class Customer2sController extends Controller
+class customersController extends Controller
 {
     protected $repo;
 
-    public function __construct(Customer2sRepository $repo)
+    public function __construct(CustomerRepository $repo)
     {
-        $this->middleware('auth');
         $this->repo = $repo;
     }
     /**
@@ -24,7 +22,8 @@ class Customer2sController extends Controller
      */
     public function index()
     {
-
+        $customer = Customer::orderBy('id','desc')->get();
+        return $customer;
     }
 
     /**
@@ -45,7 +44,7 @@ class Customer2sController extends Controller
      */
     public function store(Request $request)
     {
-        $this->repo->newCus2($request);
+        $this->repo->newCustomer($request);
     }
 
     /**
@@ -56,7 +55,8 @@ class Customer2sController extends Controller
      */
     public function show($id)
     {
-        //
+        $contracts = $this->repo->showContracts($id);
+        return $contracts;
     }
 
     /**
@@ -67,7 +67,7 @@ class Customer2sController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -79,7 +79,7 @@ class Customer2sController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->repo->updateCus2($request, $id);
+        $this->repo->updateCustomer($request, $id);
     }
 
     /**
@@ -90,14 +90,18 @@ class Customer2sController extends Controller
      */
     public function destroy($id)
     {
-        Customer2::findOrFail($id)->delete();
+        Customer::findOrFail($id)->delete();
     }
 
-    public function showList($contract_id,$name)
+    public function search($name)
     {
-
-        $cus2 = $this->repo->search($contract_id, $name);
-
-        return $cus2;
+        switch ($name){
+            case "单位名称":
+                return Customer::all();
+                break;
+            default:
+                return Customer::where('name', 'like', '%'.$name.'%')->get();
+                break;
+        }
     }
 }

@@ -1,22 +1,21 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\API;
 
-use App\Contract;
 use App\Customer;
 use App\Customer2;
 use App\Repositories\Customer2sRepository;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
-class Customer2sController extends Controller
+class customer2sController extends Controller
 {
     protected $repo;
-
-    public function __construct(Customer2sRepository $repo)
+    function __construct(Customer2sRepository $repo)
     {
-        $this->middleware('auth');
         $this->repo = $repo;
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -24,7 +23,8 @@ class Customer2sController extends Controller
      */
     public function index()
     {
-
+        $customer2s = Customer2::orderBy('id','desc')->get();
+        return $customer2s;
     }
 
     /**
@@ -45,7 +45,11 @@ class Customer2sController extends Controller
      */
     public function store(Request $request)
     {
-        $this->repo->newCus2($request);
+        Customer2::create([
+            'name' => $request->name,
+            'phone' => $request->phone,
+            'customer_name' => $request->customer['payload']['name'] ,
+        ]);
     }
 
     /**
@@ -67,7 +71,7 @@ class Customer2sController extends Controller
      */
     public function edit($id)
     {
-
+        //
     }
 
     /**
@@ -79,7 +83,12 @@ class Customer2sController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->repo->updateCus2($request, $id);
+        Customer2::findOrFail($id)->update([
+            'name'=> $request->name,
+            'phone'=>$request->phone,
+            //全部迁移到第二稿时再做repository
+            'customer_name'=>$request->customer['payload']['name'],
+        ]);
     }
 
     /**
@@ -93,11 +102,10 @@ class Customer2sController extends Controller
         Customer2::findOrFail($id)->delete();
     }
 
-    public function showList($contract_id,$name)
+    public function search($contract_id, $name)
     {
+        $users = $this->repo->search($contract_id, $name);
 
-        $cus2 = $this->repo->search($contract_id, $name);
-
-        return $cus2;
+        return $users;
     }
 }
